@@ -1,110 +1,34 @@
-from fpdf import FPDF
-from fpdf.enums import XPos, YPos
-from req_data import req_data
+import win32print
 from datetime import date
+import os
 
-PAPER_WIDTH = 6
-PAPER_HEIGHT = 6.5
+printers = win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL, None, 1)
 
-# FONT_NAME = "helvetica"
-BOLD = "B"
-REGULAR = ""
-FONT_SIZE = 8
-CELL_HEIGHT = 0.7
-MARGIN = 0.5
-MAX_WIDTH = PAPER_WIDTH - (MARGIN * 2)
+# print(printers[5][2])
+# for printer in printers:
+#     print(printer)
 
-TITLE_BORDER = "LTB"
-BODY_BORDER = "TRB"
-
-(number, name, use, dose, unit, consume_time, must_finish) = req_data()
+printer_name = printers[5][2]
 
 today = date.strftime(date.today(), "%d-%m-%Y")
 
-pdf = FPDF('P', 'cm', (PAPER_WIDTH, PAPER_HEIGHT))
-pdf.set_margins(MARGIN, MARGIN, MARGIN)
-pdf.set_auto_page_break(False, MARGIN)
+parent_dir = "D:/"
+directory = "etiket_{0}".format(today)
+
+path = os.path.join(parent_dir, directory)
 
 
-pdf.add_font("Arial", "", r"C:\Windows\Fonts\arial.ttf")
-pdf.add_font("Arial", "B", r"C:\Windows\Fonts\arialbd.ttf")
-FONT_NAME = "Arial"
+file_path = r"D:\etiket_22-01-2024\1_Dewi_22-01-2024.pdf"
+fh = open(file_path, 'rb')
 
+printer_handler = win32print.OpenPrinter(printer_name)
+printer_info = win32print.GetPrinter(printer_handler, 2)
+job_info = win32print.StartDocPrinter(printer_handler, 1, (file_path, None, "RAW"))
 
-# Add page
-pdf.add_page()
+win32print.StartPagePrinter(printer_handler)
+win32print.WritePrinter(printer_handler, fh.read())
+win32print.EndPagePrinter(printer_handler)
+win32print.EndDocPrinter(printer_handler)
 
-TOP_COLUMN_WIDTH = 2.5
-
-
-pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-
-title_width = pdf.get_string_width("No.")
-num_col_width = title_width + 0.1
-
-pdf.cell(num_col_width, CELL_HEIGHT, "No.", border=TITLE_BORDER)
-
-# number = "222"
-pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, number, border=BODY_BORDER)
-
-pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-
-title_width = pdf.get_string_width("Tgl:")
-date_col_width = title_width + 0.1
-pdf.cell(date_col_width, CELL_HEIGHT, "Tgl:", border=TITLE_BORDER)
-
-pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-pdf.cell((TOP_COLUMN_WIDTH - date_col_width), CELL_HEIGHT, today, border=BODY_BORDER, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-
-
-title_width = pdf.get_string_width("Nama:")
-name_col_width = title_width + 0.1
-
-pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-pdf.cell(name_col_width, CELL_HEIGHT, "Nama:", border=TITLE_BORDER)
-
-# name = "Nicolai Christian Suhalim"
-pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-pdf.cell((MAX_WIDTH - name_col_width), CELL_HEIGHT, name, border=BODY_BORDER, align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-
-# use = "Antibiotik / Radang Tenggorokan"
-pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-pdf.cell(MAX_WIDTH, CELL_HEIGHT, use, border=1, align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-
-title_width = pdf.get_string_width("Sehari")
-a_day_width = title_width + 0.2
-pdf.cell(a_day_width, CELL_HEIGHT, "Sehari", border=TITLE_BORDER)
-
-unit_width = pdf.get_string_width("Bungkus") + 0.2
-
-
-# num_of_consume = "3"
-# dose = "1/12"
-# dose_split = dose.split('/')
-# dose = u"<b>{0} x <sup>{1}</sup>\u2044<sub>{2}</sub></b>".format(num_of_consume, dose_split[0], dose_split[1])
-
-# final_dose_str = u"<b>3 x <sup>1</sup>\u2044<sub>10</sub></b>"
-# final_dose_str = u"<b>3 x 1</b>"
-
-pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-# pdf.cell((MAX_WIDTH - unit_width - a_day_width), CELL_HEIGHT, final_dose_str, align='C', border=1)
-
-pdf.set_xy(2.5, 2.8)
-pdf.write_html(dose)
-
-
-pdf.set_xy(4.2, 2.6)
-# unit = "Kapsul"
-pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-pdf.cell(unit_width, CELL_HEIGHT, unit, border=BODY_BORDER, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-
-# consume_time = "Sebelum Makan"
-pdf.cell(MAX_WIDTH, CELL_HEIGHT, consume_time, align='C', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-
-# must_finish = None
-if must_finish is not None:
-    pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-    pdf.cell(MAX_WIDTH, CELL_HEIGHT, must_finish, align='C', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-
-pdf.output("pdf_trial.pdf")
+win32print.ClosePrinter(printer_handler)
+fh.close()

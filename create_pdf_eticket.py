@@ -10,9 +10,10 @@ def create_pdf_eticket(data):
     # FONT_NAME = "helvetica"
     BOLD = "B"
     REGULAR = ""
-    FONT_SIZE = 8
-    CELL_HEIGHT = 0.7
-    MARGIN = 0.5
+    FONT_SIZE = 10
+    BIGGER_FONT_SIZE = 14
+    CELL_HEIGHT = 0.8
+    MARGIN = 0.3
     MAX_WIDTH = PAPER_WIDTH - (MARGIN * 2)
 
     TITLE_BORDER = "LTB"
@@ -43,7 +44,7 @@ def create_pdf_eticket(data):
     # Add page
     pdf.add_page()
 
-    TOP_COLUMN_WIDTH = 2.5
+    TOP_COLUMN_WIDTH = (PAPER_WIDTH - (2 * MARGIN)) / 2
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
 
@@ -52,7 +53,6 @@ def create_pdf_eticket(data):
 
     pdf.cell(num_col_width, CELL_HEIGHT, "No.", border=TITLE_BORDER)
 
-    # number = "222"
     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
     pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, data["num"], border=BODY_BORDER)
 
@@ -65,15 +65,13 @@ def create_pdf_eticket(data):
     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
     pdf.cell((TOP_COLUMN_WIDTH - date_col_width), CELL_HEIGHT, today, border=BODY_BORDER, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-
     title_width = pdf.get_string_width("Nama:")
     name_col_width = title_width + 0.1
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     pdf.cell(name_col_width, CELL_HEIGHT, "Nama:", border=TITLE_BORDER)
 
-    # name = "Nicolai Christian Suhalim"
-    pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
+    pdf.set_font(FONT_NAME, BOLD, BIGGER_FONT_SIZE)
     pdf.cell((MAX_WIDTH - name_col_width), CELL_HEIGHT, data["name"], border=BODY_BORDER, align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     # use = "Antibiotik / Radang Tenggorokan"
@@ -120,3 +118,16 @@ def create_pdf_eticket(data):
     print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
     pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
     
+
+if __name__ == "__main__":
+    data = {
+        "num": "123",
+        "name": "Nicolai Christian Suhalim",
+        "use": "Antibiotik / Radang Tenggorokan",
+        "dose": "3 x 1",
+        "consume_time": "Sebelum Makan",
+        "must_finish": "Harus Habis",
+        "unit": "Kapsul"
+    }
+
+    create_pdf_eticket(data)
