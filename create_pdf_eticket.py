@@ -43,7 +43,7 @@ def create_pdf_eticket(data):
 
     # Add page
     pdf.add_page()
-
+    
     TOP_COLUMN_WIDTH = (PAPER_WIDTH - (2 * MARGIN)) / 2
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
@@ -51,78 +51,85 @@ def create_pdf_eticket(data):
     title_width = pdf.get_string_width("No.")
     num_col_width = title_width + 0.1
 
-    pdf.cell(num_col_width, CELL_HEIGHT, "No.", border=TITLE_BORDER)
+    pdf.cell(num_col_width, CELL_HEIGHT, "No.")
 
     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-    pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, data["num"], border=BODY_BORDER)
+
+    pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, data["num"])
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-
     title_width = pdf.get_string_width("Tgl:")
     date_col_width = title_width + 0.1
-    pdf.cell(date_col_width, CELL_HEIGHT, "Tgl:", border=TITLE_BORDER)
+    pdf.cell(date_col_width, CELL_HEIGHT, "Tgl:")
 
     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-    pdf.cell((TOP_COLUMN_WIDTH - date_col_width), CELL_HEIGHT, today, border=BODY_BORDER, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell((TOP_COLUMN_WIDTH - date_col_width), CELL_HEIGHT, today, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    title_width = pdf.get_string_width("Nama:")
+    pdf.set_line_width(0.02)
+    pdf.line(pdf.x, pdf.y, (PAPER_WIDTH - MARGIN), pdf.y)
+
+    start_name = 1.1 + 0.6
+
+    pdf.y = start_name
+
+    print(pdf.x, pdf.y)
+
+    # title_width = pdf.get_string_width("Nama:")
     name_col_width = title_width + 0.1
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-    pdf.cell(name_col_width, CELL_HEIGHT, "Nama:", border=TITLE_BORDER)
+    pdf.cell(name_col_width, None, "Nama:")
+
+    pdf.x = name_col_width + MARGIN + 0.2
+    pdf.y = 1.1
 
     pdf.set_font(FONT_NAME, BOLD, BIGGER_FONT_SIZE)
-    pdf.cell((MAX_WIDTH - name_col_width), CELL_HEIGHT, data["name"], border=BODY_BORDER, align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    # pdf.cell((MAX_WIDTH - name_col_width), CELL_HEIGHT, data["name"], border=BODY_BORDER, align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.multi_cell((MAX_WIDTH - name_col_width - 0.2), CELL_HEIGHT, data["name"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    # use = "Antibiotik / Radang Tenggorokan"
-    pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-    pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["use"], border=1, align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.line(pdf.x, pdf.y, (PAPER_WIDTH - MARGIN), pdf.y)
 
-    title_width = pdf.get_string_width("Sehari")
-    a_day_width = title_width + 0.2
-    pdf.cell(a_day_width, CELL_HEIGHT, "Sehari", border=TITLE_BORDER)
+    print(pdf.x, pdf.y)
 
-    unit_width = pdf.get_string_width("Bungkus") + 0.2
+    # # use = "Antibiotik / Radang Tenggorokan"
+    # pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
+    # pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["use"], border=1, align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
+    # title_width = pdf.get_string_width("Sehari")
+    # a_day_width = title_width + 0.2
+    # pdf.cell(a_day_width, CELL_HEIGHT, "Sehari", border=TITLE_BORDER)
 
-    # num_of_consume = "3"
-    # dose = "1/12"
-    # dose_split = dose.split('/')
-    # dose = u"<b>{0} x <sup>{1}</sup>\u2044<sub>{2}</sub></b>".format(num_of_consume, dose_split[0], dose_split[1])
+    # unit_width = pdf.get_string_width("Bungkus") + 0.2
 
-    # final_dose_str = u"<b>3 x <sup>1</sup>\u2044<sub>10</sub></b>"
-    # final_dose_str = u"<b>3 x 1</b>"
-
-    pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-    # pdf.cell((MAX_WIDTH - unit_width - a_day_width), CELL_HEIGHT, final_dose_str, align='C', border=1)
-
-    pdf.set_xy(2.5, 2.8)
-    pdf.write_html(data["dose"])
+    # pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
+    # pdf.set_xy(2.5, 2.8)
+    # pdf.write_html(data["dose"])
 
 
-    pdf.set_xy(4.2, 2.6)
-    # unit = "Kapsul"
-    pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-    pdf.cell(unit_width, CELL_HEIGHT, data["unit"], border=BODY_BORDER, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    # pdf.set_xy(4.2, 2.6)
+    # # unit = "Kapsul"
+    # pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
+    # pdf.cell(unit_width, CELL_HEIGHT, data["unit"], border=BODY_BORDER, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    # consume_time = "Sebelum Makan"
-    pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["consume_time"], align='C', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    # # consume_time = "Sebelum Makan"
+    # pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["consume_time"], align='C', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    # must_finish = None
-    if data["must_finish"] is not None:
-        pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-        pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    # # must_finish = None
+    # if data["must_finish"] is not None:
+    #     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
+    #     pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    # pdf.output("pdf_trial.pdf")
+    # # pdf.output("pdf_trial.pdf")
 
-    print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
-    pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
+    # print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
+    # pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
+    pdf.output("trial.pdf")
     
 
 if __name__ == "__main__":
     data = {
         "num": "123",
-        "name": "Nicolai Christian Suhalim",
+        "name": "Christian",
         "use": "Antibiotik / Radang Tenggorokan",
         "dose": "3 x 1",
         "consume_time": "Sebelum Makan",
