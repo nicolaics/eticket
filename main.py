@@ -97,8 +97,7 @@ def print_button_clicked():
     for entry in dropdown_state_group:
         entry.set("")
 
-    for entry in radio_state_group:
-        entry.set(None)  
+    must_finish_state.set(None)
 
 def get_med_use(event):
     global use
@@ -170,7 +169,7 @@ dose_entry.grid(row=3, column=3, padx=PADDING, pady= PADDING)
 unit_state = StringVar()
 
 unit_dropdown_menu = OptionMenu(root, unit_state, *(choices.unit_choice))
-unit_dropdown_menu.config(width=10, background='#DEDBD2', activebackground='white')
+unit_dropdown_menu.config(width=10, background='#DEDBD2', activebackground='white', takefocus=1)
 unit_dropdown_menu.grid(row=3, column=4, sticky=LEFT + RIGHT, pady=PADDING)
 
 consume_time_label = Label(root, text="Waktu minum:", justify='right')
@@ -179,7 +178,7 @@ consume_time_label.grid(row=4, column=0, sticky=RIGHT, pady= PADDING)
 consume_time_state = StringVar()
 
 consume_time_menu = OptionMenu(root, consume_time_state, *(choices.consume_time_choice))
-consume_time_menu.config(background='#DEDBD2', activebackground='white')
+consume_time_menu.config(background='#DEDBD2', activebackground='white', takefocus=1)
 consume_time_menu.grid(row=4, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
 
 must_finish_label = Label(root, text="Harus dihabiskan atau tidak?", wraplength=100, justify='right')
@@ -191,14 +190,11 @@ must_finish_state.set(None)
 yes_finish_radio_button = Radiobutton(root, text="Ya", value="Habiskan", variable=must_finish_state, justify='left')
 yes_finish_radio_button.grid(row=5, column=1, pady= PADDING)
 
-no_finish_radio_button = Radiobutton(root, text="Tidak", value=None, variable=must_finish_state, justify='left')
+no_finish_radio_button = Radiobutton(root, text="Tidak", value="Tidak", variable=must_finish_state, justify='left')
 no_finish_radio_button.grid(row=5, column=2, pady= PADDING)
-
 
 entry_group = (num_entry, name_entry, num_of_consume_entry, dose_entry)
 dropdown_state_group = (use_state, unit_state)
-radio_state_group = (consume_time_state, must_finish_state)
-
 
 print_button = Button(root, text="Print", command=print_button_clicked, background='#C7EFCF', activebackground='#5ADBFF')
 print_button.grid(row=6, column=0, columnspan=5, sticky=LEFT + RIGHT, padx=PADDING, pady=PADDING)

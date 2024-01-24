@@ -174,7 +174,7 @@ def create_pdf_eticket(data):
     # Line after when to eat the medicine
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
-    if data["must_finish"] is not None:
+    if data["must_finish"] == "Habiskan":
         pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
         pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
@@ -196,7 +196,7 @@ if __name__ == "__main__":
         "use": "Antibiotik",
         "dose": "3 x 1",
         "consume_time": "Sebelum Makan",
-        "must_finish": "Habiskan",
+        "must_finish": "Tidak",
         "unit": "Tablet"
     }
 
