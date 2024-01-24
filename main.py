@@ -2,6 +2,10 @@ from tkinter import *
 from tkinter import messagebox
 from create_pdf_eticket import create_pdf_eticket
 
+import choices
+
+import sys
+
 LEFT = 'w'
 RIGHT = 'e'
 TOP = 'n'
@@ -101,7 +105,7 @@ def get_med_use(event):
     global medicine_use_other
     medicine_use_other = False
 
-    if use_state.get() == use_choice[9]:
+    if use_state.get() == choices.use_choice[9]:
         medicine_use_other = True
 
         use_dropdown_menu.grid(row=2, column=1, columnspan=2, sticky=LEFT + RIGHT, pady=PADDING)
@@ -116,30 +120,9 @@ def get_med_use(event):
         print(use_state.get())
         data["use"] = use
 
-use_choice = [
-    "Batuk",
-    "Pilek",
-    "Batuk dan Pilek",
-    "Batuk Sesak",
-    "Maag",
-    "Sakit / Nyeri",
-    "Antibiotik / Radang Tenggorokan",
-    "Vitamin",
-    "Obat Tidur / Penenang",
-    "Yang lain:"
-]
-
-unit_choice = [
-    "Tablet",
-    "Kapsul",
-    "Bungkus"
-]
-
-consume_time_choice = [
-    "Sebelum Makan",
-    "Sesudah Makan",
-    "Saat Makan"
-]
+def focus_next_widget(event):
+    event.widget.tk_focusNext().focus()
+    return("break")
 
 root = Tk()
 root.geometry("730x500")
@@ -166,8 +149,8 @@ use_label.grid(row=2, column=0, sticky=RIGHT, padx=PADDING, pady=PADDING)
 
 use_state = StringVar()
 
-use_dropdown_menu = OptionMenu(root, use_state, *use_choice, command=get_med_use)
-use_dropdown_menu.config(background='#DEDBD2', activebackground='white')
+use_dropdown_menu = OptionMenu(root, use_state, *(choices.use_choice), command=get_med_use)
+use_dropdown_menu.config(background='#DEDBD2', activebackground='white', takefocus=1)
 use_dropdown_menu.grid(row=2, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
 
 use_others_entry = Entry(root)
@@ -186,7 +169,7 @@ dose_entry.grid(row=3, column=3, padx=PADDING, pady= PADDING)
 
 unit_state = StringVar()
 
-unit_dropdown_menu = OptionMenu(root, unit_state, *unit_choice)
+unit_dropdown_menu = OptionMenu(root, unit_state, *(choices.unit_choice))
 unit_dropdown_menu.config(width=10, background='#DEDBD2', activebackground='white')
 unit_dropdown_menu.grid(row=3, column=4, sticky=LEFT + RIGHT, pady=PADDING)
 
@@ -195,7 +178,7 @@ consume_time_label.grid(row=4, column=0, sticky=RIGHT, pady= PADDING)
 
 consume_time_state = StringVar()
 
-consume_time_menu = OptionMenu(root, consume_time_state, *consume_time_choice)
+consume_time_menu = OptionMenu(root, consume_time_state, *(choices.consume_time_choice))
 consume_time_menu.config(background='#DEDBD2', activebackground='white')
 consume_time_menu.grid(row=4, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
 
@@ -215,7 +198,7 @@ no_finish_radio_button.grid(row=5, column=2, pady= PADDING)
 entry_group = (num_entry, name_entry, num_of_consume_entry, dose_entry)
 dropdown_state_group = (use_state, unit_state)
 radio_state_group = (consume_time_state, must_finish_state)
-        
+
 
 print_button = Button(root, text="Print", command=print_button_clicked, background='#C7EFCF', activebackground='#5ADBFF')
 print_button.grid(row=6, column=0, columnspan=5, sticky=LEFT + RIGHT, padx=PADDING, pady=PADDING)
