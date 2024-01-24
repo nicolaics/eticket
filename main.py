@@ -83,11 +83,6 @@ def print_button_clicked():
     data["consume_time"] = consume_time_state.get()
     data["must_finish"] = must_finish_state.get()
 
-    # if must_finish_state.get() == "Ya":
-    #     data["must_finish"] = "Harus Dihabiskan"
-    # else:
-    #     data["must_finish"] = None
-
     create_pdf_eticket(data)
 
     messagebox.showinfo("Printing...", "Now Printing...")

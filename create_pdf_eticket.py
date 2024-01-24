@@ -3,6 +3,9 @@ from fpdf.enums import XPos, YPos
 from datetime import date
 import os
 
+from print_using_acrobat_draft import print_using_acrobat
+from print_using_dialog_draft import print_using_dialog
+
 def get_num_of_lines_in_multicell(pdf, message, CELL_WIDTH):
     # divide the string in words
     words = message.split(" ")
@@ -183,8 +186,14 @@ def create_pdf_eticket(data):
     # Bottom line
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
-    print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
-    pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
+    file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
+                                                 
+    print(file_name)
+    pdf.output(file_name)
+
+    print_using_acrobat(file_name)
+    # print_using_dialog(file_name)
+
     # pdf.output("trial.pdf")
     
 
