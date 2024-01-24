@@ -3,9 +3,6 @@ from fpdf.enums import XPos, YPos
 from datetime import date
 import os
 
-from print_using_acrobat_draft import print_using_acrobat
-from print_using_dialog_draft import print_using_dialog
-
 def get_num_of_lines_in_multicell(pdf, message, CELL_WIDTH):
     # divide the string in words
     words = message.split(" ")
@@ -177,7 +174,7 @@ def create_pdf_eticket(data):
     # Line after when to eat the medicine
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
-    if data["must_finish"] is not None:
+    if data["must_finish"] == "Habiskan":
         pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
         pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
@@ -186,14 +183,8 @@ def create_pdf_eticket(data):
     # Bottom line
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
-    file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
-                                                 
-    print(file_name)
-    pdf.output(file_name)
-
-    print_using_acrobat(file_name)
-    # print_using_dialog(file_name)
-
+    print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
+    pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
     # pdf.output("trial.pdf")
     
 
@@ -205,7 +196,7 @@ if __name__ == "__main__":
         "use": "Antibiotik",
         "dose": "3 x 1",
         "consume_time": "Sebelum Makan",
-        "must_finish": "Habiskan",
+        "must_finish": "Tidak",
         "unit": "Tablet"
     }
 
