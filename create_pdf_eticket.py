@@ -21,7 +21,8 @@ def get_num_of_lines_in_multicell(pdf, message, CELL_WIDTH):
 
 def create_pdf_eticket(data):
     PAPER_WIDTH = 6
-    PAPER_HEIGHT = 6.5
+    # PAPER_HEIGHT = 6.5
+    PAPER_HEIGHT = 7
 
     BOLD = "B"
     REGULAR = ""
@@ -30,9 +31,6 @@ def create_pdf_eticket(data):
     CELL_HEIGHT = 0.8
     MARGIN = 0.1
     MAX_WIDTH = PAPER_WIDTH - (MARGIN * 2)
-
-    TITLE_BORDER = "LTB"
-    BODY_BORDER = "TRB"
 
     today = date.strftime(date.today(), "%d-%m-%Y")
 
@@ -47,7 +45,8 @@ def create_pdf_eticket(data):
         pass
 
     pdf = FPDF('P', 'cm', (PAPER_WIDTH, PAPER_HEIGHT))
-    pdf.set_margins(MARGIN, MARGIN, MARGIN)
+    # pdf.set_margins(MARGIN, MARGIN, MARGIN)
+    pdf.set_margins(MARGIN, 0.2, MARGIN)
     pdf.set_auto_page_break(False, MARGIN)
 
 
@@ -80,31 +79,17 @@ def create_pdf_eticket(data):
     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
     pdf.cell((TOP_COLUMN_WIDTH - date_col_width), CELL_HEIGHT, today, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    prev_x = pdf.x
-    prev_y = pdf.y
+    print("After No. and Date: {0}, {1}".format(pdf.x, pdf.y))
 
-    print("First row {0}, {1}".format(pdf.x, pdf.y))
 
     pdf.set_line_width(0.02)
     ######### FIRST LINE #############
-    # pdf.line(0, 1, PAPER_WIDTH, 1)
-
-
-    # pdf.line(pdf.x, pdf.y, (PAPER_WIDTH - MARGIN), pdf.y)
-    pdf.line(0, 1, PAPER_WIDTH, 1)
-    pdf.line(0, 2, PAPER_WIDTH, 2)
-    pdf.line(0, 3, PAPER_WIDTH, 3)
-    pdf.line(0, 4, PAPER_WIDTH, 4)
-    pdf.line(0, 5, PAPER_WIDTH, 5)
-    pdf.line(0, 6, PAPER_WIDTH, 6)
+    pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
     
-    pdf.line(1, 0, 1, PAPER_HEIGHT)
-    pdf.line(2, 0, 2, PAPER_HEIGHT)
-    pdf.line(3, 0, 3, PAPER_HEIGHT)
-    pdf.line(4, 0, 4, PAPER_HEIGHT)
-    pdf.line(5, 0, 5, PAPER_HEIGHT)
-
-    pdf.y = 1.1 + 0.6
+    temp_y = pdf.y
+    # pdf.y = 1.1 + 0.5
+    pdf.y += 0.7
+    print(pdf.y)
 
     title_width = pdf.get_string_width("Nama:")
     name_col_width = title_width + 0.1
@@ -112,56 +97,99 @@ def create_pdf_eticket(data):
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     pdf.cell(name_col_width, None, "Nama:")
 
-    num_of_lines_name = get_num_of_lines_in_multicell(pdf, data["name"], (MAX_WIDTH - name_col_width - 0.2))
+    num_of_lines = get_num_of_lines_in_multicell(pdf, data["name"], (MAX_WIDTH - name_col_width))
     # print(num_of_lines_name)
 
-    if num_of_lines_name > 1:
-        pdf.y = 1.1
+    # if num_of_lines > 1:
+    #     pdf.y = 1.1
+    # else:
+    #     pdf.y = 1.1 + 0.3
+
+    pdf.y = temp_y
+    print(pdf.y)
+
+    if num_of_lines > 1:
+        pdf.y += 0.15
     else:
-        pdf.y = 1.1 + 0.4
-        
+        pdf.y += 0.5
+
     pdf.x = name_col_width + MARGIN + 0.2
 
     pdf.set_font(FONT_NAME, BOLD, BIGGER_FONT_SIZE)
     # pdf.cell((MAX_WIDTH - name_col_width), CELL_HEIGHT, data["name"], border=BODY_BORDER, align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     pdf.multi_cell((MAX_WIDTH - name_col_width - 0.2), CELL_HEIGHT, data["name"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    # pdf.line(pdf.x, pdf.y, (PAPER_WIDTH - MARGIN), pdf.y)
+    print("After Name: {0}, {1}".format(pdf.x, pdf.y))
 
-    print("Second: {0}, {1}".format(pdf.x, pdf.y))
+    second_line_y = temp_y + 1.8
+    pdf.y = second_line_y
 
-    pdf.y += 0.1
+    ######### SECOND LINE #############
+    pdf.line(0, second_line_y, PAPER_WIDTH, second_line_y)
+
+    temp_y = pdf.y
+    third_line_y = temp_y + 1.6
+
+    num_of_lines = get_num_of_lines_in_multicell(pdf, data["use"], MAX_WIDTH)
+
+    # if num_of_lines > 1:
+    #     pdf.y = 2.7
+    # else:
+    #     pdf.y += 2.7 + 0.4
+
+    if num_of_lines == 1:
+        pdf.y += 0.45
 
     pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
     # pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["use"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     pdf.multi_cell(MAX_WIDTH, CELL_HEIGHT, data["use"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("Third: {0}, {1}".format(pdf.x, pdf.y))
+    print("After use: {0}, {1:.1f}".format(pdf.x, pdf.y))
 
+    ######### THIRD LINE #############
+    pdf.line(0, third_line_y, PAPER_WIDTH, third_line_y)
+
+    pdf.y = third_line_y
+    
+    # GEDE BOX 0.8
+    fourth_line_y = third_line_y + 0.8
+
+    pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     title_width = pdf.get_string_width("Sehari")
     a_day_width = title_width + 0.2
-    pdf.cell(a_day_width, CELL_HEIGHT, "Sehari", border=TITLE_BORDER)
+    pdf.cell(a_day_width, CELL_HEIGHT, "Sehari")
 
     unit_width = pdf.get_string_width("Bungkus") + 0.2
 
+    dose_pos_y = third_line_y + 0.15
+
     pdf.set_font(FONT_NAME, BOLD, BIGGER_FONT_SIZE)
-    pdf.set_xy(2.5, (pdf.y + 0.15))
+    pdf.set_xy(2.35, dose_pos_y)
     pdf.write_html(data["dose"])
 
-
-    pdf.set_xy(2.5, (pdf.y + 0.15))
+    pdf.set_xy(4.35, third_line_y)
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-    pdf.cell(unit_width, CELL_HEIGHT, data["unit"], border=BODY_BORDER, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(unit_width, CELL_HEIGHT, data["unit"], new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    # # consume_time = "Sebelum Makan"
-    # pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["consume_time"], align='C', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    print("After consume: {0}, {1:.1f}".format(pdf.x, pdf.y))
 
-    # # must_finish = None
-    # if data["must_finish"] is not None:
-    #     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-    #     pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    ######### FOURTH LINE #############
+    pdf.line(0, fourth_line_y, PAPER_WIDTH, fourth_line_y)
 
-    # # pdf.output("pdf_trial.pdf")
+    pdf.y = fourth_line_y
+
+    pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["consume_time"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+
+    print("After consume time: {0}, {1:.1f}".format(pdf.x, pdf.y))
+    
+    ######### FIFTH LINE #############
+    pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
+
+    if data["must_finish"] is not None:
+        pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
+        pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+
+    print("Must finish: {0}, {1}".format(pdf.x, pdf.y))
 
     # print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
     # pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
@@ -171,11 +199,12 @@ def create_pdf_eticket(data):
 if __name__ == "__main__":
     data = {
         "num": "123",
-        "name": "Nicolai Christian Suhalim",
-        "use": "Antibiotik / Radang Tenggorokan",
+        "name": "Nicolai Christian",
+        # "use": "Antibiotik / Radang Tenggorokan",
+        "use": "Antibiotik",
         "dose": "3 x 1",
         "consume_time": "Sebelum Makan",
-        "must_finish": "Harus Habis",
+        "must_finish": "Habiskan",
         "unit": "Kapsul"
     }
 
