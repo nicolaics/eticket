@@ -81,11 +81,12 @@ def print_button_clicked():
     data["dose"] = dose
     data["unit"] = unit_state.get()
     data["consume_time"] = consume_time_state.get()
+    data["must_finish"] = must_finish_state.get()
 
-    if must_finish_state.get() == "Ya":
-        data["must_finish"] = "Harus Dihabiskan"
-    else:
-        data["must_finish"] = None
+    # if must_finish_state.get() == "Ya":
+    #     data["must_finish"] = "Harus Dihabiskan"
+    # else:
+    #     data["must_finish"] = None
 
     create_pdf_eticket(data)
 
@@ -141,7 +142,8 @@ unit_choice = [
 
 consume_time_choice = [
     "Sebelum Makan",
-    "Sesudah Makan"
+    "Sesudah Makan",
+    "Saat Makan"
 ]
 
 root = Tk()
@@ -211,10 +213,10 @@ must_finish_label.grid(row=5, column=0, padx=PADDING, pady= PADDING)
 must_finish_state = StringVar()
 must_finish_state.set(None)
 
-yes_finish_radio_button = Radiobutton(root, text="Ya", value="Ya", variable=must_finish_state, justify='left')
+yes_finish_radio_button = Radiobutton(root, text="Ya", value="Habiskan", variable=must_finish_state, justify='left')
 yes_finish_radio_button.grid(row=5, column=1, pady= PADDING)
 
-no_finish_radio_button = Radiobutton(root, text="Tidak", value="Tidak", variable=must_finish_state, justify='left')
+no_finish_radio_button = Radiobutton(root, text="Tidak", value=None, variable=must_finish_state, justify='left')
 no_finish_radio_button.grid(row=5, column=2, pady= PADDING)
 
 

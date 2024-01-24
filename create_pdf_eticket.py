@@ -60,10 +60,14 @@ def create_pdf_eticket(data):
     
     TOP_COLUMN_WIDTH = (PAPER_WIDTH - (2 * MARGIN)) / 2
 
+    pdf.set_line_width(0.02)
+    # Top line
+    pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
+
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
 
     title_width = pdf.get_string_width("No.")
-    num_col_width = title_width + 0.1
+    num_col_width = title_width + MARGIN
 
     pdf.cell(num_col_width, CELL_HEIGHT, "No.")
 
@@ -73,7 +77,7 @@ def create_pdf_eticket(data):
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     title_width = pdf.get_string_width("Tgl:")
-    date_col_width = title_width + 0.1
+    date_col_width = title_width + MARGIN
     pdf.cell(date_col_width, CELL_HEIGHT, "Tgl:")
 
     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
@@ -81,18 +85,17 @@ def create_pdf_eticket(data):
 
     print("After No. and Date: {0}, {1}".format(pdf.x, pdf.y))
 
-
-    pdf.set_line_width(0.02)
-    ######### FIRST LINE #############
+    # Line after No. and date
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
     
+    # Save temp for the name title and the name itself
     temp_y = pdf.y
-    # pdf.y = 1.1 + 0.5
-    pdf.y += 0.7
-    print(pdf.y)
+    
+    # Set the Y-axis for the name title to be in the middle of the box
+    pdf.y += 0.6
 
     title_width = pdf.get_string_width("Nama:")
-    name_col_width = title_width + 0.1
+    name_col_width = title_width + MARGIN
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     pdf.cell(name_col_width, None, "Nama:")
@@ -100,66 +103,52 @@ def create_pdf_eticket(data):
     num_of_lines = get_num_of_lines_in_multicell(pdf, data["name"], (MAX_WIDTH - name_col_width))
     # print(num_of_lines_name)
 
-    # if num_of_lines > 1:
-    #     pdf.y = 1.1
-    # else:
-    #     pdf.y = 1.1 + 0.3
-
+    # To reset the Y-axis for the name from the title
     pdf.y = temp_y
-    print(pdf.y)
 
-    if num_of_lines > 1:
-        pdf.y += 0.15
-    else:
-        pdf.y += 0.5
+    if num_of_lines == 1:
+        pdf.y += (CELL_HEIGHT / 2)
 
-    pdf.x = name_col_width + MARGIN + 0.2
+    pdf.x = name_col_width + MARGIN
 
     pdf.set_font(FONT_NAME, BOLD, BIGGER_FONT_SIZE)
-    # pdf.cell((MAX_WIDTH - name_col_width), CELL_HEIGHT, data["name"], border=BODY_BORDER, align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-    pdf.multi_cell((MAX_WIDTH - name_col_width - 0.2), CELL_HEIGHT, data["name"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.multi_cell((MAX_WIDTH - name_col_width - (MARGIN * 2)), CELL_HEIGHT, data["name"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     print("After Name: {0}, {1}".format(pdf.x, pdf.y))
 
-    second_line_y = temp_y + 1.8
+    second_line_y = temp_y + (CELL_HEIGHT * 2)
     pdf.y = second_line_y
 
-    ######### SECOND LINE #############
+    # Line after name
     pdf.line(0, second_line_y, PAPER_WIDTH, second_line_y)
 
     temp_y = pdf.y
-    third_line_y = temp_y + 1.6
+    third_line_y = temp_y + (CELL_HEIGHT * 2)
 
     num_of_lines = get_num_of_lines_in_multicell(pdf, data["use"], MAX_WIDTH)
 
-    # if num_of_lines > 1:
-    #     pdf.y = 2.7
-    # else:
-    #     pdf.y += 2.7 + 0.4
-
+    # To put the use in the middle of the box
     if num_of_lines == 1:
         pdf.y += 0.45
 
     pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
-    # pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["use"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     pdf.multi_cell(MAX_WIDTH, CELL_HEIGHT, data["use"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     print("After use: {0}, {1:.1f}".format(pdf.x, pdf.y))
 
-    ######### THIRD LINE #############
+    # Line after medicine usage
     pdf.line(0, third_line_y, PAPER_WIDTH, third_line_y)
 
     pdf.y = third_line_y
     
-    # GEDE BOX 0.8
-    fourth_line_y = third_line_y + 0.8
+    fourth_line_y = third_line_y + CELL_HEIGHT
 
+    pdf.set_xy(0.4, third_line_y)
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     title_width = pdf.get_string_width("Sehari")
-    a_day_width = title_width + 0.2
-    pdf.cell(a_day_width, CELL_HEIGHT, "Sehari")
+    pdf.cell(title_width, CELL_HEIGHT, "Sehari")
 
-    unit_width = pdf.get_string_width("Bungkus") + 0.2
+    unit_width = pdf.get_string_width("Bungkus") + (MARGIN * 2)
 
     dose_pos_y = third_line_y + 0.15
 
@@ -167,13 +156,13 @@ def create_pdf_eticket(data):
     pdf.set_xy(2.35, dose_pos_y)
     pdf.write_html(data["dose"])
 
-    pdf.set_xy(4.35, third_line_y)
+    pdf.set_xy(4.3, third_line_y)
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     pdf.cell(unit_width, CELL_HEIGHT, data["unit"], new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After consume: {0}, {1:.1f}".format(pdf.x, pdf.y))
+    print("After dose: {0}, {1:.1f}".format(pdf.x, pdf.y))
 
-    ######### FOURTH LINE #############
+    # Line after dose
     pdf.line(0, fourth_line_y, PAPER_WIDTH, fourth_line_y)
 
     pdf.y = fourth_line_y
@@ -182,7 +171,7 @@ def create_pdf_eticket(data):
 
     print("After consume time: {0}, {1:.1f}".format(pdf.x, pdf.y))
     
-    ######### FIFTH LINE #############
+    # Line after when to eat the medicine
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
     if data["must_finish"] is not None:
@@ -190,22 +179,25 @@ def create_pdf_eticket(data):
         pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     print("Must finish: {0}, {1}".format(pdf.x, pdf.y))
+    
+    # Bottom line
+    pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
-    # print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
-    # pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
-    pdf.output("trial.pdf")
+    print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
+    pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
+    # pdf.output("trial.pdf")
     
 
 if __name__ == "__main__":
     data = {
         "num": "123",
-        "name": "Nicolai Christian",
+        "name": "Nicolai Christian Suhalim",
         # "use": "Antibiotik / Radang Tenggorokan",
         "use": "Antibiotik",
         "dose": "3 x 1",
         "consume_time": "Sebelum Makan",
         "must_finish": "Habiskan",
-        "unit": "Kapsul"
+        "unit": "Tablet"
     }
 
     create_pdf_eticket(data)
