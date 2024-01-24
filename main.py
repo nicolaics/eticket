@@ -83,11 +83,6 @@ def print_button_clicked():
     data["consume_time"] = consume_time_state.get()
     data["must_finish"] = must_finish_state.get()
 
-    # if must_finish_state.get() == "Ya":
-    #     data["must_finish"] = "Harus Dihabiskan"
-    # else:
-    #     data["must_finish"] = None
-
     create_pdf_eticket(data)
 
     messagebox.showinfo("Printing...", "Now Printing...")
@@ -199,13 +194,10 @@ consume_time_label = Label(root, text="Waktu minum:", justify='right')
 consume_time_label.grid(row=4, column=0, sticky=RIGHT, pady= PADDING)
 
 consume_time_state = StringVar()
-consume_time_state.set(None)
 
-col = 1
-for consume_time in consume_time_choice:
-    rad_button = Radiobutton(root, text=consume_time, value=consume_time, variable=consume_time_state, justify='left')
-    rad_button.grid(row=4, column=col, columnspan=2, sticky=LEFT + RIGHT, pady= PADDING)
-    col += 2
+consume_time_menu = OptionMenu(root, consume_time_state, *consume_time_choice)
+consume_time_menu.config(background='#DEDBD2', activebackground='white')
+consume_time_menu.grid(row=4, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
 
 must_finish_label = Label(root, text="Harus dihabiskan atau tidak?", wraplength=100, justify='right')
 must_finish_label.grid(row=5, column=0, padx=PADDING, pady= PADDING)
