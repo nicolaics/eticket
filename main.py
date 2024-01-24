@@ -4,8 +4,6 @@ from create_pdf_eticket import create_pdf_eticket
 
 import choices
 
-import sys
-
 LEFT = 'w'
 RIGHT = 'e'
 TOP = 'n'
@@ -118,10 +116,6 @@ def get_med_use(event):
         use_others_entry.grid_remove()
         print(use_state.get())
         data["use"] = use
-
-def focus_next_widget(event):
-    event.widget.tk_focusNext().focus()
-    return("break")
 
 root = Tk()
 root.geometry("730x500")
