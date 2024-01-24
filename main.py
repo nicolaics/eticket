@@ -17,7 +17,7 @@ FONT_SIZE = 14
 global data
 data = {}
 
-def null_checking(param_entry, param_state_1, param_state_2):
+def null_checking(param_entry, param_state_1):
     for entry in param_entry:
         if entry.get() == "":
             return False
@@ -25,10 +25,9 @@ def null_checking(param_entry, param_state_1, param_state_2):
     for entry in param_state_1:
         if entry.get() == "":
             return False
-        
-    for entry in param_state_2:
-        if entry.get() == "":
-            return False
+    
+    if must_finish_state.get() == "":
+        return False
         
     if medicine_use_other is True:
         if use_others_entry.get() == "":
@@ -44,7 +43,7 @@ def type_checking(string):
         return False
     
 def print_button_clicked():
-    isValid = null_checking(entry_group, dropdown_state_group, radio_state_group)
+    isValid = null_checking(entry_group, dropdown_state_group)
 
     if isValid is False:
         messagebox.showerror("Error", "Ada yang belum di-isi atau dipilih!")
@@ -188,7 +187,7 @@ no_finish_radio_button = Radiobutton(root, text="Tidak", value="Tidak", variable
 no_finish_radio_button.grid(row=5, column=2, pady= PADDING)
 
 entry_group = (num_entry, name_entry, num_of_consume_entry, dose_entry)
-dropdown_state_group = (use_state, unit_state)
+dropdown_state_group = (use_state, unit_state, consume_time_state)
 
 print_button = Button(root, text="Print", command=print_button_clicked, background='#C7EFCF', activebackground='#5ADBFF')
 print_button.grid(row=6, column=0, columnspan=5, sticky=LEFT + RIGHT, padx=PADDING, pady=PADDING)
