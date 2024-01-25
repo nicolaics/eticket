@@ -50,5 +50,5 @@ def print_using_dialog(file_name):
     messagebox.showinfo("Finished", "Successfully Printed!")
 
 if __name__ == "__main__":
-    file_path = r"D:\etiket_22-01-2024\1_Dewi_22-01-2024.pdf"
+    file_path = r"D:/etiket_25-01-2024/123_Christian suhalim_25-01-2024.pdf"
     print_using_dialog(file_path)
