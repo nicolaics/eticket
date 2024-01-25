@@ -1,8 +1,6 @@
 import win32print
 import win32api
 import win32gui
-from datetime import date
-import os
 
 DM_OUT_BUFFER = 0x02
 DM_IN_BUFFER = 0x08
@@ -10,7 +8,7 @@ DM_IN_PROMPT = 0x04
 DM_DEFAULT_SOURCE = 0x200
 
 
-file_path = r"D:\etiket_22-01-2024\1_Dewi_22-01-2024.pdf"
+file_path = "trial.pdf"
 
 printers = win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL, None, 1)
 # printers = win32print.EnumPrinters(2)
@@ -34,16 +32,15 @@ print(pDevModeObj.PaperSize)
 
 # win32print.DocumentProperties
 
-pDevModeObj.PaperSize = 1
-pDevModeObj.PaperLength = 6000 #SIZE IN 1/10 mm
-pDevModeObj.PaperWidth = 6500 #SIZE IN 1/10 mm
+pDevModeObj.PaperSize = 0
+pDevModeObj.PaperLength = 7000 #SIZE IN 1/10 mm
+pDevModeObj.PaperWidth = 6000 #SIZE IN 1/10 mm
 
-# win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, DM_IN_PROMPT | DM_IN_BUFFER | DM_OUT_BUFFER)
-win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, DM_IN_BUFFER | DM_OUT_BUFFER)
+# win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, DM_IN_BUFFER | DM_OUT_BUFFER)
 
-print(pDevModeObj.PaperWidth)
-print(pDevModeObj.PaperLength)
-print(pDevModeObj.PaperSize)
+# print(pDevModeObj.PaperWidth)
+# print(pDevModeObj.PaperLength)
+# print(pDevModeObj.PaperSize)
 
 # properties["pDevMode"] = pDevModeObj
 # win32print.SetPrinter(printer_handler, level, properties, 0)
@@ -51,7 +48,16 @@ print(pDevModeObj.PaperSize)
 # win32api.ShellExecute (0, "printto", file_path,'"%s"' % printer_name,".",0)
 
 
-# hdc = win32gui.CreateDC('', printer_handler, pDevModeObj)
+hdc = win32gui.CreateDC('', printer_handler, pDevModeObj)
+
+doc_info = (
+    "Test",     # doc name
+    None,       # name of output file
+    "RAW",      # doc type
+    0
+)
+win32print.StartDoc(hdc, doc_info)
+
 # win32print.StartDoc(hdc, ('Test', None, None, 0))
 # win32print.StartPage(hdc)
 # win32print.WritePrinter(printer_handler, file_path)
@@ -60,17 +66,6 @@ print(pDevModeObj.PaperSize)
 
 # win32print.ClosePrinter(printer_handler)
 
-
-
-# win32api.ShellExecute()
-win32api.ShellExecute(
-        0,
-        "printto",
-        file_path,
-        '"%s"' % printer_name,
-        ".",
-        0
-    )
 
 # win32api.ShellExecute(0,              # NULL since it's not associated with a window
 #              "print",        # execute the "print" verb defined for the file type
