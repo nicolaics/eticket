@@ -27,7 +27,7 @@ def create_pdf_eticket(data):
     BOLD = "B"
     REGULAR = ""
     FONT_SIZE = 10
-    BIGGER_FONT_SIZE = 14
+    BIGGER_FONT_SIZE = 12
     CELL_HEIGHT = 0.8
     MARGIN = 0.2
     MAX_WIDTH = PAPER_WIDTH - (MARGIN * 2)
@@ -45,7 +45,6 @@ def create_pdf_eticket(data):
         pass
 
     pdf = FPDF('P', 'cm', (PAPER_WIDTH, PAPER_HEIGHT))
-    # pdf.set_margins(MARGIN, MARGIN, MARGIN)
     pdf.set_margins(MARGIN, 0.2, MARGIN)
     pdf.set_auto_page_break(False, MARGIN)
 
@@ -181,15 +180,12 @@ def create_pdf_eticket(data):
     # Bottom line
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
     
-    # print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
-    # pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
-    pdf.output("trial.pdf")
+    file_name = "trial_2.pdf"
 
-    file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
+    # file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
 
-    print(file_name)
+    # print(file_name)
     pdf.output(file_name)
-    # pdf.output("trial.pdf")
 
     return file_name
     
@@ -202,7 +198,7 @@ if __name__ == "__main__":
         # "use": "Antibiotik",
         "dose": "3 x 1",
         "consume_time": "Sebelum Makan",
-        "must_finish": "Tidak",
+        "must_finish": "Habiskan",
         "unit": "Tablet"
     }
 
