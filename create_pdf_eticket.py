@@ -184,6 +184,8 @@ def create_pdf_eticket(data):
     # print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
     # pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
     pdf.output("trial.pdf")
+
+    return "trial.pdf"
     
 
 if __name__ == "__main__":

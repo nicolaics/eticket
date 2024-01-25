@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from create_pdf_eticket import create_pdf_eticket
 from print_using_acrobat import print_using_acrobat
+from select_printer import select_printer
 
 import choices
 
@@ -85,10 +86,20 @@ def print_button_clicked():
     data["consume_time"] = consume_time_state.get()
     data["must_finish"] = must_finish_state.get()
 
-    create_pdf_eticket(data)
-    print_using_acrobat(file)
+    file_name = create_pdf_eticket(data)
 
-    # messagebox.showinfo("Printing...", "Now Printing...")
+    def_printer_file = "def_printer.txt"
+    printer_name = ""
+
+    try:
+        fh = open(def_printer_file, 'r')
+        printer_name = fh.read().strip()
+        fh.close()
+    except:
+        printer_name = select_printer(root)
+        print("In main: ", printer_name)
+
+    print_using_acrobat(file_name, printer_name)
 
     for entry in entry_group:
         entry.delete(0, 'end')

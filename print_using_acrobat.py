@@ -35,7 +35,7 @@ def print_using_acrobat(file_name, printer_name):
     
     win32print.ClosePrinter(printer_handler)
 
-    messagebox.showinfo("Finished", "Successfully Printed!")
+    messagebox.showinfo("Printing", "Now Printing...")
 
 if __name__ == "__main__":
     # file_path = r"D:/etiket_25-01-2024/123_Christian suhalim_25-01-2024.pdf"
