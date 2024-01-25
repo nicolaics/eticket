@@ -113,6 +113,9 @@ def get_med_use(event):
     else:
         use = use_state.get()
         use_others_entry.grid_remove()
+
+        use_dropdown_menu.grid(row=2, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
+
         print(use_state.get())
         data["use"] = use
 
