@@ -84,9 +84,9 @@ def print_button_clicked():
     data["consume_time"] = consume_time_state.get()
     data["must_finish"] = must_finish_state.get()
 
-    create_pdf_eticket(data)
+    file_name = create_pdf_eticket(data)
 
-    messagebox.showinfo("Printing...", "Now Printing...")
+    # messagebox.showinfo("Printing...", "Now Printing...")
 
     for entry in entry_group:
         entry.delete(0, 'end')
