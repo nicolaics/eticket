@@ -29,7 +29,7 @@ def create_pdf_eticket(data):
     FONT_SIZE = 10
     BIGGER_FONT_SIZE = 14
     CELL_HEIGHT = 0.8
-    MARGIN = 0.1
+    MARGIN = 0.2
     MAX_WIDTH = PAPER_WIDTH - (MARGIN * 2)
 
     today = date.strftime(date.today(), "%d-%m-%Y")
@@ -54,7 +54,6 @@ def create_pdf_eticket(data):
     pdf.add_font("Arial", "B", r"C:\Windows\Fonts\arialbd.ttf")
     FONT_NAME = "Arial"
 
-
     # Add page
     pdf.add_page()
     
@@ -72,7 +71,6 @@ def create_pdf_eticket(data):
     pdf.cell(num_col_width, CELL_HEIGHT, "No.")
 
     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
-
     pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, data["num"])
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
@@ -95,7 +93,7 @@ def create_pdf_eticket(data):
     pdf.y += 0.6
 
     title_width = pdf.get_string_width("Nama:")
-    name_col_width = title_width + MARGIN
+    name_col_width = title_width
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     pdf.cell(name_col_width, None, "Nama:")
@@ -182,6 +180,10 @@ def create_pdf_eticket(data):
     
     # Bottom line
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
+    
+    # print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
+    # pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
+    pdf.output("trial.pdf")
 
     file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
 
@@ -196,8 +198,8 @@ if __name__ == "__main__":
     data = {
         "num": "123",
         "name": "Nicolai Christian Suhalim",
-        # "use": "Antibiotik / Radang Tenggorokan",
-        "use": "Antibiotik",
+        "use": "Antibiotik / Radang Tenggorokan",
+        # "use": "Antibiotik",
         "dose": "3 x 1",
         "consume_time": "Sebelum Makan",
         "must_finish": "Tidak",
