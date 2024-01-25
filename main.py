@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from create_pdf_eticket import create_pdf_eticket
+from print_using_acrobat import print_using_acrobat
 
 import choices
 
@@ -85,8 +86,9 @@ def print_button_clicked():
     data["must_finish"] = must_finish_state.get()
 
     create_pdf_eticket(data)
+    print_using_acrobat(file)
 
-    messagebox.showinfo("Printing...", "Now Printing...")
+    # messagebox.showinfo("Printing...", "Now Printing...")
 
     for entry in entry_group:
         entry.delete(0, 'end')

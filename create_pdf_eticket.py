@@ -180,7 +180,7 @@ def create_pdf_eticket(data):
     
     # Bottom line
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
-
+    
     # print(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
     # pdf.output(path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today))
     pdf.output("trial.pdf")
