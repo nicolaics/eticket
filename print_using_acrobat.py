@@ -39,7 +39,7 @@ def print_using_acrobat(file_name, printer_name):
 
 if __name__ == "__main__":
     # file_path = r"D:/etiket_25-01-2024/123_Christian suhalim_25-01-2024.pdf"
-    file_path = "trial.pdf"
+    file_path = "trial_7x5.pdf"
     
     printers = win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL, None, 1)
     printer_name = printers[5][2]
