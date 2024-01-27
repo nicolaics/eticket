@@ -129,7 +129,7 @@ def create_pdf_eticket(data):
     pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
 
     num_of_lines = get_num_of_lines_in_multicell(pdf, data["use"], MAX_WIDTH)
-    print(num_of_lines)
+    # print(num_of_lines)
 
     # To put the use in the middle of the box
     if num_of_lines == 1:
