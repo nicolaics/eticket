@@ -1,18 +1,21 @@
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos
 from datetime import date
+
 import os
 
-def get_num_of_lines_in_multicell(pdf, message, CELL_WIDTH):
+def get_num_of_lines_in_multicell(pdf, message, width):
     # divide the string in words
     words = message.split(" ")
     line = ""
     n = 1
+
     for word in words:
         line += word + " "
         line_width = pdf.get_string_width(line)
+
         # In the next if it is necessary subtract 1 to the WIDTH
-        if line_width > CELL_WIDTH - 1:
+        if line_width > width - 1:
             # the multi_cell() insert a line break
             n += 1
             # reset of the string
@@ -20,16 +23,15 @@ def get_num_of_lines_in_multicell(pdf, message, CELL_WIDTH):
     return n
 
 def create_pdf_eticket(data):
-    PAPER_WIDTH = 6
-    # PAPER_HEIGHT = 6.5
+    PAPER_WIDTH = 5
     PAPER_HEIGHT = 7
 
     BOLD = "B"
     REGULAR = ""
     FONT_SIZE = 10
-    BIGGER_FONT_SIZE = 14
-    CELL_HEIGHT = 0.8
-    MARGIN = 0.2
+    BIGGER_FONT_SIZE = 12
+    CELL_HEIGHT = 0.7
+    MARGIN = 0.1
     MAX_WIDTH = PAPER_WIDTH - (MARGIN * 2)
 
     today = date.strftime(date.today(), "%d-%m-%Y")
@@ -45,8 +47,7 @@ def create_pdf_eticket(data):
         pass
 
     pdf = FPDF('P', 'cm', (PAPER_WIDTH, PAPER_HEIGHT))
-    # pdf.set_margins(MARGIN, MARGIN, MARGIN)
-    pdf.set_margins(MARGIN, 0.2, MARGIN)
+    pdf.set_margins(MARGIN, MARGIN, MARGIN)
     pdf.set_auto_page_break(False, MARGIN)
 
 
@@ -65,17 +66,17 @@ def create_pdf_eticket(data):
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
 
-    title_width = pdf.get_string_width("No.")
-    num_col_width = title_width + MARGIN
+    num_col_width = pdf.get_string_width("No.") + MARGIN
 
     pdf.cell(num_col_width, CELL_HEIGHT, "No.")
 
     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
     pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, data["num"])
 
+    pdf.set_x(2.1)
+
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-    title_width = pdf.get_string_width("Tgl:")
-    date_col_width = title_width + MARGIN
+    date_col_width = pdf.get_string_width("Tgl:") + MARGIN
     pdf.cell(date_col_width, CELL_HEIGHT, "Tgl:")
 
     pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
@@ -92,14 +93,17 @@ def create_pdf_eticket(data):
     # Set the Y-axis for the name title to be in the middle of the box
     pdf.y += 0.6
 
-    title_width = pdf.get_string_width("Nama:")
-    name_col_width = title_width
+    name_col_width = pdf.get_string_width("Nama:")
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     pdf.cell(name_col_width, None, "Nama:")
 
-    num_of_lines = get_num_of_lines_in_multicell(pdf, data["name"], (MAX_WIDTH - name_col_width))
-    # print(num_of_lines_name)
+    pdf.set_font(FONT_NAME, BOLD, BIGGER_FONT_SIZE)
+
+    name_size_limit = (MAX_WIDTH - name_col_width)
+
+    num_of_lines = get_num_of_lines_in_multicell(pdf, data["name"], name_size_limit)
+    # print(num_of_lines)
 
     # To reset the Y-axis for the name from the title
     pdf.y = temp_y
@@ -109,7 +113,6 @@ def create_pdf_eticket(data):
 
     pdf.x = name_col_width + MARGIN
 
-    pdf.set_font(FONT_NAME, BOLD, BIGGER_FONT_SIZE)
     pdf.multi_cell((MAX_WIDTH - name_col_width - (MARGIN * 2)), CELL_HEIGHT, data["name"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     print("After Name: {0}, {1}".format(pdf.x, pdf.y))
@@ -123,13 +126,15 @@ def create_pdf_eticket(data):
     temp_y = pdf.y
     third_line_y = temp_y + (CELL_HEIGHT * 2)
 
+    pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
+
     num_of_lines = get_num_of_lines_in_multicell(pdf, data["use"], MAX_WIDTH)
+    print(num_of_lines)
 
     # To put the use in the middle of the box
     if num_of_lines == 1:
         pdf.y += 0.45
 
-    pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
     pdf.multi_cell(MAX_WIDTH, CELL_HEIGHT, data["use"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     print("After use: {0}, {1:.1f}".format(pdf.x, pdf.y))
@@ -141,7 +146,7 @@ def create_pdf_eticket(data):
     
     fourth_line_y = third_line_y + CELL_HEIGHT
 
-    pdf.set_xy(0.4, third_line_y)
+    pdf.set_xy(0.5, third_line_y)
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     title_width = pdf.get_string_width("Sehari")
     pdf.cell(title_width, CELL_HEIGHT, "Sehari")
@@ -151,10 +156,10 @@ def create_pdf_eticket(data):
     dose_pos_y = third_line_y + 0.15
 
     pdf.set_font(FONT_NAME, BOLD, BIGGER_FONT_SIZE)
-    pdf.set_xy(2.35, dose_pos_y)
+    pdf.set_xy(1.9, dose_pos_y)
     pdf.write_html(data["dose"])
 
-    pdf.set_xy(4.3, third_line_y)
+    pdf.set_xy(3.2, third_line_y)
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     pdf.cell(unit_width, CELL_HEIGHT, data["unit"], new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
@@ -192,12 +197,12 @@ def create_pdf_eticket(data):
 if __name__ == "__main__":
     data = {
         "num": "123",
-        "name": "Nicolai Christian Suhalim",
-        "use": "Antibiotik / Radang Tenggorokan",
-        # "use": "Antibiotik",
+        "name": "Nicolai Christian",
+        # "use": "Antibiotik / Radang Tenggorokan",
+        "use": "Obat Tidur / Penenang",
         "dose": "3 x 1",
         "consume_time": "Sebelum Makan",
-        "must_finish": "Tidak",
+        "must_finish": "Habiskan",
         "unit": "Tablet"
     }
 

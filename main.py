@@ -16,8 +16,21 @@ PADDING = 10
 FONT_NAME = "Arial"
 FONT_SIZE = 14
 
+MAX_CHAR_NAME = 20
+MAX_CHAR_USE = 30
+
 global data
 data = {}
+
+def validate_name_length(P):
+    if len(P) > MAX_CHAR_NAME:
+        return False
+    return True
+
+def validate_use_length(P):
+    if len(P) > MAX_CHAR_USE:
+        return False
+    return True
 
 def null_checking(param_entry, param_state_1):
     for entry in param_entry:
@@ -149,7 +162,10 @@ num_entry.grid(row=0, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
 name_label = Label(root, text="Nama:")
 name_label.grid(row=1, column=0, sticky=RIGHT, padx=PADDING, pady=PADDING)
 
-name_entry = Entry(root)
+validate_name_cmd = (root.register(validate_name_length), '%P')
+validate_use_cmd = (root.register(validate_use_length), '%P')
+
+name_entry = Entry(root, validate='key', validatecommand=validate_name_cmd)
 name_entry.grid(row=1, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
 
 use_label = Label(root, text="Jenis obat:")
@@ -161,7 +177,7 @@ use_dropdown_menu = OptionMenu(root, use_state, *(choices.use_choice), command=g
 use_dropdown_menu.config(background='#DEDBD2', activebackground='white', takefocus=1)
 use_dropdown_menu.grid(row=2, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
 
-use_others_entry = Entry(root)
+use_others_entry = Entry(root, validate='key', validatecommand=validate_use_cmd)
 
 num_of_consume_label = Label(root, text="Berapa kali sehari:", wraplength=100, justify='right')
 num_of_consume_label.grid(row=3, column=0, sticky=RIGHT, padx=PADDING, pady=PADDING)
