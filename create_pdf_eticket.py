@@ -69,17 +69,12 @@ def create_pdf_eticket(data):
     num_col_width = pdf.get_string_width("No.") + MARGIN
 
     pdf.cell(num_col_width, CELL_HEIGHT, "No.")
-
-    pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
     pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, data["num"])
 
     pdf.set_x(2.1)
 
-    pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-    date_col_width = pdf.get_string_width("Tgl:") + MARGIN
-    pdf.cell(date_col_width, CELL_HEIGHT, "Tgl:")
-
-    pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
+    date_col_width = pdf.get_string_width("Tgl.") + MARGIN
+    pdf.cell(date_col_width, CELL_HEIGHT, "Tgl.")
     pdf.cell((TOP_COLUMN_WIDTH - date_col_width), CELL_HEIGHT, today, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     print("After No. and Date: {0}, {1}".format(pdf.x, pdf.y))
