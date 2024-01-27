@@ -21,19 +21,23 @@ def select_printer(root):
     global select_printer_window
     select_printer_window = Toplevel(root)
     select_printer_window.title("Select Printer")
-    select_printer_window.geometry("400x300")
+    select_printer_window.geometry("450x200")
     select_printer_window.option_add("*font", "Arial 12")
 
     global select_printer_state
     select_printer_state = StringVar()
-    select_printer_state.set(None)
     
     select_printer_label = Label(select_printer_window, text="Select Printer:")
     select_printer_label.pack()
 
+    printer_choice = []
+
     for printer in printers:
-        radio_button = Radiobutton(select_printer_window, text=printer[2], value=printer[2], variable=select_printer_state, justify='left')
-        radio_button.pack()
+        printer_choice.append(printer[2])
+
+    printer_dropdown = OptionMenu(select_printer_window, select_printer_state, *(printer_choice))
+    printer_dropdown.config(width=40, background='#DEDBD2', activebackground='white', takefocus=1)
+    printer_dropdown.pack(pady=20)
 
     ok_button = Button(select_printer_window, text="Ok", command=ok_button_clicked, background='#C7EFCF', activebackground='#5ADBFF')
     ok_button.pack()
@@ -45,5 +49,10 @@ def select_printer(root):
     return printer_name
 
 
-# if __name__ == "__main__":
-#     select_printer()
+if __name__ == "__main__":
+    root = Tk()
+    root.geometry("730x500")
+    root.title("Etiket")
+    root.option_add("*font", "Arial 14")
+
+    select_printer(root)
