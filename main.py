@@ -84,7 +84,7 @@ def print_button_clicked():
 
     if dose.find('/') != -1:
         dose_split = dose.split('/')
-        dose = u"<b>{0} x <sup>{1}</sup>\u2044<sub>{2}</sub></b>".format(num_of_consume_entry.get(), dose_split[0], dose_split[1])
+        dose = u"{0} x <sup>{1}</sup>\u2044<sub>{2}</sub>".format(num_of_consume_entry.get(), dose_split[0], dose_split[1])
     else:
         isValid = type_checking(dose)
         
@@ -212,7 +212,7 @@ must_finish_label.grid(row=5, column=0, padx=PADDING, pady= PADDING)
 must_finish_state = StringVar()
 must_finish_state.set(None)
 
-yes_finish_radio_button = Radiobutton(root, text="Ya", value="Habiskan", variable=must_finish_state, justify='left')
+yes_finish_radio_button = Radiobutton(root, text="Ya", value="HABISKAN", variable=must_finish_state, justify='left')
 yes_finish_radio_button.grid(row=5, column=1, pady= PADDING)
 
 no_finish_radio_button = Radiobutton(root, text="Tidak", value="Tidak", variable=must_finish_state, justify='left')

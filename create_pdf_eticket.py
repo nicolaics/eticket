@@ -132,7 +132,7 @@ def create_pdf_eticket(data):
 
     pdf.multi_cell(MAX_WIDTH, CELL_HEIGHT, data["use"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After use: {0}, {1:.1f}".format(pdf.x, pdf.y))
+    print("After use: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     # Line after medicine usage
     pdf.line(0, third_line_y, PAPER_WIDTH, third_line_y)
@@ -150,15 +150,15 @@ def create_pdf_eticket(data):
 
     dose_pos_y = third_line_y + 0.15
 
-    pdf.set_font(FONT_NAME, BOLD, BIGGER_FONT_SIZE)
+    pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
     pdf.set_xy(1.9, dose_pos_y)
     pdf.write_html(data["dose"])
 
-    pdf.set_xy(3.2, third_line_y)
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
+    pdf.set_xy(3.2, third_line_y)
     pdf.cell(unit_width, CELL_HEIGHT, data["unit"], new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After dose: {0}, {1:.1f}".format(pdf.x, pdf.y))
+    print("After dose: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     # Line after dose
     pdf.line(0, fourth_line_y, PAPER_WIDTH, fourth_line_y)
@@ -172,11 +172,11 @@ def create_pdf_eticket(data):
     # Line after when to eat the medicine
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
-    if data["must_finish"] == "Habiskan":
-        pdf.set_font(FONT_NAME, BOLD, FONT_SIZE)
+    if data["must_finish"] == "HABISKAN":
+        pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
         pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("Must finish: {0}, {1}".format(pdf.x, pdf.y))
+    print("Must finish: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
     
     # Bottom line
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
@@ -195,9 +195,9 @@ if __name__ == "__main__":
         "name": "Nicolai Christian Suhalim",
         # "use": "Antibiotik / Radang Tenggorokan",
         "use": "Obat Tidur / Penenang",
-        "dose": "<b>3 x 1</b>",
+        "dose": "3 x 1",
         "consume_time": "Sebelum Makan",
-        "must_finish": "Habiskan",
+        "must_finish": "HABISKAN",
         "unit": "Tablet"
     }
 
