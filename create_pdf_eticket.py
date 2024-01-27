@@ -15,7 +15,7 @@ def get_num_of_lines_in_multicell(pdf, message, width):
         line_width = pdf.get_string_width(line)
 
         # In the next if it is necessary subtract 1 to the WIDTH
-        if line_width > width - 1:
+        if line_width > width:
             # the multi_cell() insert a line break
             n += 1
             # reset of the string
@@ -77,7 +77,7 @@ def create_pdf_eticket(data):
     pdf.cell(date_col_width, CELL_HEIGHT, "Tgl.")
     pdf.cell((TOP_COLUMN_WIDTH - date_col_width), CELL_HEIGHT, today, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After No. and Date: {0}, {1}".format(pdf.x, pdf.y))
+    print("After No. and Date: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     # Line after No. and date
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
@@ -104,13 +104,13 @@ def create_pdf_eticket(data):
     pdf.y = temp_y
 
     if num_of_lines == 1:
-        pdf.y += (CELL_HEIGHT / 2)
+        pdf.y += (CELL_HEIGHT / 2) + 0.08
 
-    pdf.x = name_col_width + MARGIN
+    pdf.x = name_col_width + (MARGIN * 2)
 
     pdf.multi_cell((MAX_WIDTH - name_col_width - (MARGIN * 2)), CELL_HEIGHT, data["name"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After Name: {0}, {1}".format(pdf.x, pdf.y))
+    print("After Name: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     second_line_y = temp_y + (CELL_HEIGHT * 2)
     pdf.y = second_line_y
@@ -192,7 +192,7 @@ def create_pdf_eticket(data):
 if __name__ == "__main__":
     data = {
         "num": "123",
-        "name": "Nicolai Christian",
+        "name": "Nicolai Christian Suhalim",
         # "use": "Antibiotik / Radang Tenggorokan",
         "use": "Obat Tidur / Penenang",
         "dose": "3 x 1",
