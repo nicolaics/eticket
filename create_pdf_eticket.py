@@ -195,7 +195,7 @@ if __name__ == "__main__":
         "name": "Nicolai Christian Suhalim",
         # "use": "Antibiotik / Radang Tenggorokan",
         "use": "Obat Tidur / Penenang",
-        "dose": "3 x 1",
+        "dose": "<b>3 x 1</b>",
         "consume_time": "Sebelum Makan",
         "must_finish": "Habiskan",
         "unit": "Tablet"
