@@ -35,9 +35,10 @@ def create_pdf_eticket(data):
     MAX_WIDTH = PAPER_WIDTH - (MARGIN * 2)
 
     today = date.strftime(date.today(), "%d-%m-%Y")
+    today_folder = date.today()
 
     parent_dir = "D:/"
-    directory = "etiket_{0}".format(today)
+    directory = "etiket_{0}".format(today_folder)
 
     path = os.path.join(parent_dir, directory)
 

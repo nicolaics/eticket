@@ -5,7 +5,7 @@ def ok_button_clicked():
     global printer_name
     printer_name = select_printer_state.get()
 
-    printer_def = "def_printer.txt"
+    printer_def = "prev_printer.txt"
     fh = open(printer_def, 'w')
 
     fh.write(printer_name)
@@ -34,7 +34,7 @@ def select_printer(root):
 
     for printer in printers:
         printer_choice.append(printer[2])
-
+    
     printer_dropdown = OptionMenu(select_printer_window, select_printer_state, *(printer_choice))
     printer_dropdown.config(width=40, background='#DEDBD2', activebackground='white', takefocus=1)
     printer_dropdown.pack(pady=20)
@@ -43,6 +43,22 @@ def select_printer(root):
     ok_button.pack()
 
     global printer_name
+
+    def_printer_file = "prev_printer.txt"
+    printer_name = ""
+
+    try:
+        fh = open(def_printer_file, 'r')
+        printer_name = fh.read().strip()
+        fh.close()
+
+        for index in range(len(printer_choice)):
+            if printer_choice[index] == printer_name:
+                break
+        
+        select_printer_state.set(printer_choice[index])
+    except:
+        pass
 
     select_printer_window.mainloop()
 

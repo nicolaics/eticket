@@ -3,8 +3,12 @@ from tkinter import messagebox
 from create_pdf_eticket import create_pdf_eticket
 from print_using_acrobat import print_using_acrobat
 from select_printer import select_printer
+from datetime import datetime, timedelta, date
 
+import shutil
+import os
 import choices
+import json
 
 LEFT = 'w'
 RIGHT = 'e'
@@ -21,6 +25,64 @@ MAX_CHAR_USE = 30
 
 global data
 data = {}
+
+PARENT_DIR = "D:/"
+today_date = date.today()
+
+def delete_folder():
+    today = datetime.today().strftime("%A")
+
+    if today == "Monday":
+        yesterday = today_date - timedelta(days=2)
+    else:
+        yesterday = today_date - timedelta(days=1)
+
+    directory = "etiket_{0}".format(yesterday)
+
+    path = os.path.join(PARENT_DIR, directory)
+
+    if os.path.isdir(path) is True:
+        try:
+            shutil.rmtree(path)
+        except:
+            messagebox.showerror("Error", "Gagal menghapus folder etiket sebelumnya!")
+
+def read_nomor_resep() -> list:
+    directory = "etiket_{0}/.ext_f".format(today_date)
+    path = os.path.join(PARENT_DIR, directory)
+
+    if os.path.isdir(path) is False:
+        try:
+            os.mkdir(path)
+        except:
+            messagebox.showerror("Error", "Gagal membuat folder untuk nomor resep!")
+            return
+
+    global num_list_file
+    num_list_file = path + "/no_resep.json"
+
+    try:
+        fh = open(num_list_file, 'rb')
+        num_list = json.load(fh)
+        print(num_list)
+        fh.close()
+    except:
+        messagebox.showerror("Error", "Gagal membuat file untuk nomor resep!")
+        return
+    
+    return num_list
+
+def update_nomor_resep(num_list):
+    global num_list_file
+    
+    try:
+        fh = open(num_list_file, 'w')
+        num_list.sort()
+        json.dump(num_list, fh)
+        fh.close()
+    except:
+        messagebox.showerror("Error", "Gagal menyimpan file untuk nomor resep!")
+        return
 
 def validate_name_length(P):
     if len(P) > MAX_CHAR_NAME:
@@ -70,9 +132,14 @@ def print_button_clicked():
         messagebox.showerror("Error", "Nomor harus angka!")
         return
     else:
+        if int(num_entry.get()) in num_list:
+            messagebox.showerror("Error", "Nomor resep sudah ada!")
+            return
+        
         data["num"] = num_entry.get()
+        num_list.append(int(data["num"]))
 
-    data["name"]=  name_entry.get().capitalize()
+    data["name"] = name_entry.get().capitalize()
     
     isValid = type_checking(num_of_consume_entry.get())
     
@@ -101,17 +168,7 @@ def print_button_clicked():
 
     file_name = create_pdf_eticket(data)
 
-    def_printer_file = "def_printer.txt"
-    printer_name = ""
-
-    try:
-        fh = open(def_printer_file, 'r')
-        printer_name = fh.read().strip()
-        fh.close()
-    except:
-        printer_name = select_printer(root)
-        print("In main: ", printer_name)
-
+    printer_name = select_printer(root)
     print_using_acrobat(file_name, printer_name)
 
     for entry in entry_group:
@@ -144,6 +201,10 @@ def get_med_use(event):
 
         print(use_state.get())
         data["use"] = use
+
+
+delete_folder()
+num_list = read_nomor_resep()
 
 root = Tk()
 root.geometry("730x500")
@@ -225,3 +286,5 @@ print_button = Button(root, text="Print", command=print_button_clicked, backgrou
 print_button.grid(row=6, column=0, columnspan=5, sticky=LEFT + RIGHT, padx=PADDING, pady=PADDING)
 
 root.mainloop()
+
+update_nomor_resep(num_list)

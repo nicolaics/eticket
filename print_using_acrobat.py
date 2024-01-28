@@ -16,8 +16,8 @@ def print_using_acrobat(file_name, printer_name):
 
     properties["pDevMode"] = pDevModeObj
 
-    print(pDevModeObj.PrintQuality)
-    print(pDevModeObj.Color)
+    # print(pDevModeObj.PrintQuality)
+    # print(pDevModeObj.Color)
 
     # win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, win32con.DM_IN_PROMPT | win32con.DM_IN_BUFFER | win32con.DM_OUT_BUFFER)
     win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, win32con.DM_IN_BUFFER | win32con.DM_OUT_BUFFER)
