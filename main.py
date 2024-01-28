@@ -53,10 +53,10 @@ def read_nomor_resep() -> list:
 
     if os.path.isdir(path) is False:
         try:
-            os.mkdir(path)
+            os.makedirs(path)
         except:
             messagebox.showerror("Error", "Gagal membuat folder untuk nomor resep!")
-            return
+            exit()
 
     global num_list_file
     num_list_file = path + "/no_resep.json"
@@ -67,8 +67,7 @@ def read_nomor_resep() -> list:
         print(num_list)
         fh.close()
     except:
-        messagebox.showerror("Error", "Gagal membuat file untuk nomor resep!")
-        return
+        return []
     
     return num_list
 
@@ -159,7 +158,7 @@ def print_button_clicked():
             messagebox.showerror("Error", "Dosis tidak valid!")
             return
 
-        dose = "<b>{0} x {1}</b>".format(num_of_consume_entry.get(), dose)
+        dose = "{0} x {1}".format(num_of_consume_entry.get(), dose)
 
     data["dose"] = dose
     data["unit"] = unit_state.get()
