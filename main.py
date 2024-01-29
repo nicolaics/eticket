@@ -233,7 +233,13 @@ num_label = Label(root, text="No.")
 num_label.grid(row=0, column=0, sticky=RIGHT, padx=PADDING, pady=PADDING)
 
 num_entry = Entry(root)
-num_entry.grid(row=0, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
+num_entry.grid(row=0, column=1, columnspan=2, sticky=LEFT + RIGHT, pady=PADDING)
+
+num_dash_label = Label(root, text="-")
+num_dash_label.grid(row=0, column=3, pady=PADDING)
+
+num_dash_entry = Entry(root, width=10)
+num_dash_entry.grid(row=0, column=4, columnspan=2, sticky=LEFT + RIGHT, pady=PADDING)
 
 name_label = Label(root, text="Nama:")
 name_label.grid(row=1, column=0, sticky=RIGHT, padx=PADDING, pady=PADDING)
