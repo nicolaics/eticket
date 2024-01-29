@@ -138,6 +138,13 @@ def print_button_clicked():
         data["num"] = num_entry.get()
         num_list.append(int(data["num"]))
 
+    isValid = type_checking(num_dash_entry.get())
+
+    if isValid is False:
+        messagebox.showerror("Error", "Nomor harus angka!")
+        return
+
+    data["num_dash"] = num_dash_entry.get()
     data["name"] = name_entry.get().title()
     
     isValid = type_checking(num_of_consume_entry.get())
@@ -184,13 +191,15 @@ def print_button_clicked():
     printer_name = select_printer(root)
     print_using_acrobat(file_name, printer_name, int(print_copy_entry.get()))
 
-    for entry in entry_group:
-        entry.delete(0, 'end')
+    # for entry in entry_group:
+    #     entry.delete(0, 'end')
 
-    for entry in dropdown_state_group:
-        entry.set("")
+    # for entry in dropdown_state_group:
+    #     entry.set("")
 
     must_finish_state.set(None)
+    print_copy_entry.insert(END, "1")
+    qty_entry.insert(END, "1")
 
 def get_med_use(event):
     global use
@@ -239,6 +248,7 @@ num_dash_label = Label(root, text="-")
 num_dash_label.grid(row=0, column=3, pady=PADDING)
 
 num_dash_entry = Entry(root, width=10)
+num_dash_entry.insert(END, "1")
 num_dash_entry.grid(row=0, column=4, columnspan=2, sticky=LEFT + RIGHT, pady=PADDING)
 
 name_label = Label(root, text="Nama:")

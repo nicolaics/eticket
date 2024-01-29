@@ -201,7 +201,8 @@ if __name__ == "__main__":
         "consume_time": "Sesudah Makan",
         "must_finish": "Tidak",
         "unit": "Kapsul",
-        "qty": "15"
+        "qty": "15",
+        "num_dash": "1"
     }
 
     create_pdf_eticket(data)
