@@ -25,15 +25,15 @@ def print_using_acrobat(file_name, printer_name, copy : int):
     # win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, win32con.DM_IN_PROMPT | win32con.DM_IN_BUFFER | win32con.DM_OUT_BUFFER)
     win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, win32con.DM_IN_BUFFER | win32con.DM_OUT_BUFFER)
 
-    # for it in range(copy):
-    #     win32api.ShellExecute(
-    #             0,
-    #             "printto",
-    #             file_name,
-    #             '"%s"' % printer_name,
-    #             ".",
-    #             0
-    #         )
+    for it in range(copy):
+        win32api.ShellExecute(
+                0,
+                "printto",
+                file_name,
+                '"%s"' % printer_name,
+                ".",
+                0
+            )
     
     win32print.ClosePrinter(printer_handler)
 
