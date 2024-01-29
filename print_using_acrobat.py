@@ -13,7 +13,6 @@ def print_using_acrobat(file_name, printer_name, copy : int):
     pDevModeObj.Orientation = win32con.DMORIENT_LANDSCAPE # Change into landscape
     pDevModeObj.PaperLength = 500 #SIZE IN 1/10 mm
     pDevModeObj.PaperWidth = 740 #SIZE IN 1/10 mm
-    pDevModeObj.Copies = copy
 
     # print(dir(pDevModeObj))
     # print(pDevModeObj.Copies)
@@ -26,22 +25,23 @@ def print_using_acrobat(file_name, printer_name, copy : int):
     # win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, win32con.DM_IN_PROMPT | win32con.DM_IN_BUFFER | win32con.DM_OUT_BUFFER)
     win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, win32con.DM_IN_BUFFER | win32con.DM_OUT_BUFFER)
 
-    win32api.ShellExecute(
-            0,
-            "printto",
-            file_name,
-            '"%s"' % printer_name,
-            ".",
-            0
-        )
+    for it in range(copy):
+        win32api.ShellExecute(
+                0,
+                "printto",
+                file_name,
+                '"%s"' % printer_name,
+                ".",
+                0
+            )
     
     win32print.ClosePrinter(printer_handler)
 
     messagebox.showinfo("Printing", "Now Printing...")
 
 if __name__ == "__main__":
-    # file_path = r"D:/etiket_25-01-2024/123_Christian suhalim_25-01-2024.pdf"
-    file_path = "trial_7x5.pdf"
+    file_path = r"D:/etiket_2024-01-29/54_Sagsdgjmkn_29-01-2024.pdf"
+    # file_path = "trial_7x5.pdf"
     
     printers = win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL, None, 1)
 
@@ -55,4 +55,4 @@ if __name__ == "__main__":
     printer_name = printers[select][2]
 
 
-    print_using_acrobat(file_path, printer_name)
+    print_using_acrobat(file_path, printer_name, 2)
