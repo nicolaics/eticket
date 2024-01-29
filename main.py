@@ -144,7 +144,7 @@ def print_button_clicked():
     
     dash = int(num_dash_entry.get())
     
-    number = (num, dash)
+    number = "{0}-{1}".format(num, dash)
 
     if number in num_list:
         messagebox.showerror("Error", "Nomor resep sudah ada!")
