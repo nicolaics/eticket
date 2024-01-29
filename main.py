@@ -298,9 +298,6 @@ dropdown_state_group = (use_state, unit_state, consume_time_state)
 print_button = Button(root, text="Print", command=print_button_clicked, background='#C7EFCF', activebackground='#5ADBFF')
 print_button.grid(row=7, column=0, columnspan=5, sticky=LEFT + RIGHT, padx=PADDING, pady=PADDING)
 
-
-
-
 root.mainloop()
 
 update_nomor_resep(num_list)
