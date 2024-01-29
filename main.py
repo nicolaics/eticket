@@ -136,7 +136,6 @@ def print_button_clicked():
             return
         
         data["num"] = num_entry.get()
-        num_list.append(int(data["num"]))
 
     data["name"] = name_entry.get().title()
     
@@ -184,6 +183,8 @@ def print_button_clicked():
     printer_name = select_printer(root)
     print_using_acrobat(file_name, printer_name, int(print_copy_entry.get()))
 
+    num_list.append(int(data["num"]))
+    
     for entry in entry_group:
         entry.delete(0, 'end')
 
@@ -191,6 +192,8 @@ def print_button_clicked():
         entry.set("")
 
     must_finish_state.set(None)
+    
+    print_copy_entry.insert(END, "1")
 
 def get_med_use(event):
     global use

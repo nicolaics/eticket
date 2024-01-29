@@ -178,6 +178,12 @@ def create_pdf_eticket(data):
 
     print("Must finish: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
     
+    # After habiskan
+    pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
+
+    pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
+    pdf.cell(MAX_WIDTH, CELL_HEIGHT, "Qty: {0}".format(data["qty"]), align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+
     # Bottom line
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
@@ -194,13 +200,14 @@ if __name__ == "__main__":
         "num": "69",
         # "name": "Nicolai Christian",
         "name": "Seng Kwek Gega",
-        # "use": "Antibiotik / Radang Tenggorokan",
-        "use": "Obat Tidur / PenenangW",
+        "use": "Antibiotik / Radang Tenggorokan",
+        # "use": "Obat Tidur / PenenangW",
         # "use": "Maag",
         "dose": "3 x 1",
         "consume_time": "Sesudah Makan",
-        "must_finish": "Tidak",
-        "unit": "Kapsul"
+        "must_finish": "HABISKAN",
+        "unit": "Kapsul",
+        "qty": "15"
     }
 
     create_pdf_eticket(data)
