@@ -69,7 +69,7 @@ def create_pdf_eticket(data):
     num_col_width = pdf.get_string_width("No.") + MARGIN
 
     pdf.cell(num_col_width, CELL_HEIGHT, "No.")
-    pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, data["num"])
+    pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, "{0}-{1}".format(data["num"], data["num_dash"]))
 
     pdf.set_x(2.1)
 
@@ -175,8 +175,12 @@ def create_pdf_eticket(data):
     if data["must_finish"] == "HABISKAN":
         pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
         pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+        pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
     print("Must finish: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
+    
+    pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
+    pdf.cell(MAX_WIDTH, CELL_HEIGHT, "Qty: {0}".format(data["qty"]), align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     
     # Bottom line
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
@@ -200,6 +204,7 @@ if __name__ == "__main__":
         "dose": "3 x 1",
         "consume_time": "Sesudah Makan",
         "must_finish": "Tidak",
+        # "must_finish": "HABISKAN",
         "unit": "Kapsul",
         "qty": "15",
         "num_dash": "1"
