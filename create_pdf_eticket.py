@@ -4,7 +4,7 @@ from datetime import date
 
 import os
 
-def get_num_of_lines_in_multicell(pdf, message, width):
+def get_num_of_lines_in_multicell(pdf, message, width, err_margin):
     # divide the string in words
     words = message.split(" ")
     line = ""
@@ -14,8 +14,7 @@ def get_num_of_lines_in_multicell(pdf, message, width):
         line += word + " "
         line_width = pdf.get_string_width(line)
 
-        # In the next if it is necessary subtract 1 to the WIDTH
-        if line_width > width:
+        if line_width > width - err_margin:
             # the multi_cell() insert a line break
             n += 1
             # reset of the string
@@ -98,8 +97,8 @@ def create_pdf_eticket(data):
 
     name_size_limit = (MAX_WIDTH - name_col_width)
 
-    num_of_lines = get_num_of_lines_in_multicell(pdf, data["name"], name_size_limit)
-    # print(num_of_lines)
+    num_of_lines = get_num_of_lines_in_multicell(pdf, data["name"], name_size_limit, 0.3)
+    print(num_of_lines)
 
     # To reset the Y-axis for the name from the title
     pdf.y = temp_y
@@ -124,12 +123,12 @@ def create_pdf_eticket(data):
 
     pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
 
-    num_of_lines = get_num_of_lines_in_multicell(pdf, data["use"], MAX_WIDTH)
-    # print(num_of_lines)
+    num_of_lines = get_num_of_lines_in_multicell(pdf, data["use"], MAX_WIDTH, 0)
+    print(num_of_lines)
 
     # To put the use in the middle of the box
     if num_of_lines == 1:
-        pdf.y += 0.45
+        pdf.y += 0.4
 
     pdf.multi_cell(MAX_WIDTH, CELL_HEIGHT, data["use"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
@@ -192,14 +191,16 @@ def create_pdf_eticket(data):
 
 if __name__ == "__main__":
     data = {
-        "num": "123",
-        "name": "Nicolai Christian Suhalim",
+        "num": "69",
+        # "name": "Nicolai Christian",
+        "name": "Seng Kwek Gega",
         # "use": "Antibiotik / Radang Tenggorokan",
-        "use": "Obat Tidur / Penenang",
+        "use": "Obat Tidur / PenenangW",
+        # "use": "Maag",
         "dose": "3 x 1",
-        "consume_time": "Sebelum Makan",
-        "must_finish": "HABISKAN",
-        "unit": "Tablet"
+        "consume_time": "Sesudah Makan",
+        "must_finish": "Tidak",
+        "unit": "Kapsul"
     }
 
     create_pdf_eticket(data)
