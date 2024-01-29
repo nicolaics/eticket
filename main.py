@@ -73,10 +73,9 @@ def read_nomor_resep() -> list:
 
 def update_nomor_resep(num_list):
     global num_list_file
-    
+
     try:
         fh = open(num_list_file, 'w')
-        num_list.sort()
         json.dump(num_list, fh)
         fh.close()
     except:
@@ -125,26 +124,35 @@ def print_button_clicked():
         messagebox.showerror("Error", "Ada yang belum di-isi atau dipilih!")
         return
 
-    isValid = type_checking(num_entry.get())
-
-    if isValid is False:
-        messagebox.showerror("Error", "Nomor harus angka!")
-        return
-    else:
-        if int(num_entry.get()) in num_list:
-            messagebox.showerror("Error", "Nomor resep sudah ada!")
-            return
-        
-        data["num"] = num_entry.get()
-        num_list.append(int(data["num"]))
-
     isValid = type_checking(num_dash_entry.get())
 
     if isValid is False:
         messagebox.showerror("Error", "Nomor harus angka!")
         return
+    
+    isValid = type_checking(num_entry.get())
+    if isValid is False:
+        messagebox.showerror("Error", "Nomor harus angka!")
+        return
+    
+    num = int(num_entry.get())
+    
+    isValid = type_checking(num_dash_entry.get())
+    if isValid is False:
+        messagebox.showerror("Error", "Nomor harus angka!")
+        return
+    
+    dash = int(num_dash_entry.get())
+    
+    number = (num, dash)
 
-    data["num_dash"] = num_dash_entry.get()
+    if number in num_list:
+        messagebox.showerror("Error", "Nomor resep sudah ada!")
+        return
+        
+    data["num"] = number
+    num_list.append(number)
+
     data["name"] = name_entry.get().title()
     
     isValid = type_checking(num_of_consume_entry.get())
@@ -194,12 +202,18 @@ def print_button_clicked():
     # for entry in entry_group:
     #     entry.delete(0, 'end')
 
-    # for entry in dropdown_state_group:
-    #     entry.set("")
+    for entry in dropdown_state_group:
+        entry.set("")
 
     must_finish_state.set(None)
+
+    num_of_consume_entry.delete(0, END)
+    dose_entry.delete(0, END)
+
+    print_copy_entry.delete(0, END)
     print_copy_entry.insert(END, "1")
-    qty_entry.insert(END, "1")
+
+    qty_entry.delete(0, END)
 
 def get_med_use(event):
     global use

@@ -69,7 +69,7 @@ def create_pdf_eticket(data):
     num_col_width = pdf.get_string_width("No.") + MARGIN
 
     pdf.cell(num_col_width, CELL_HEIGHT, "No.")
-    pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, "{0}-{1}".format(data["num"], data["num_dash"]))
+    pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, "{0}-{1}".format(data["num"][0], data["num"][1]))
 
     pdf.set_x(2.1)
 
@@ -185,7 +185,7 @@ def create_pdf_eticket(data):
     # Bottom line
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
-    file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
+    file_name = path + "/{0}-{1}_{2}_{3}.pdf".format(data["num"][0], data["num"][1], data["name"], today)
     
     print(file_name)
     pdf.output(file_name)
@@ -195,7 +195,7 @@ def create_pdf_eticket(data):
 
 if __name__ == "__main__":
     data = {
-        "num": "69",
+        "num": (69, 1),
         # "name": "Nicolai Christian",
         "name": "Seng Kwek Gega",
         # "use": "Antibiotik / Radang Tenggorokan",
@@ -206,8 +206,7 @@ if __name__ == "__main__":
         "must_finish": "Tidak",
         # "must_finish": "HABISKAN",
         "unit": "Kapsul",
-        "qty": "15",
-        "num_dash": "1"
+        "qty": "15"
     }
 
     create_pdf_eticket(data)
