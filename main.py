@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from create_pdf_eticket import create_pdf_eticket
+from create_pdf_eticket_7x5 import create_pdf_eticket
 from print_using_acrobat import print_using_acrobat
 from select_printer import select_printer
 from datetime import datetime, timedelta, date
