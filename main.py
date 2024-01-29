@@ -189,7 +189,9 @@ def get_med_use(event):
     global medicine_use_other
     medicine_use_other = False
 
-    if use_state.get() == choices.use_choice[9]:
+    num_of_use_choices = len(choices.use_choice) - 1
+
+    if use_state.get() == choices.use_choice[num_of_use_choices]:
         medicine_use_other = True
 
         use_dropdown_menu.grid(row=2, column=1, columnspan=2, sticky=LEFT + RIGHT, pady=PADDING)

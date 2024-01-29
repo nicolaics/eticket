@@ -8,6 +8,10 @@ use_choice = [
     "Antibiotik / Radang Tenggorokan",
     "Vitamin",
     "Obat Tidur / Penenang",
+    "Pusing / Vertigo",
+    "Gatal / Alergi",
+    "Sakit Perut",
+    "Sakit Kepala",
     "Yang lain:"
 ]
 
