@@ -165,6 +165,14 @@ def print_button_clicked():
     data["consume_time"] = consume_time_state.get()
     data["must_finish"] = must_finish_state.get()
 
+    isValid = type_checking(qty_entry.get())
+    
+    if isValid is False:
+        messagebox.showerror("Error", "Qty harus angka!")
+        return
+    
+    data["qty"] = qty_entry.get()
+
     isValid = type_checking(print_copy_entry.get())
     
     if isValid is False:
@@ -172,7 +180,7 @@ def print_button_clicked():
         return
 
     file_name = create_pdf_eticket(data)
-
+    
     printer_name = select_printer(root)
     print_using_acrobat(file_name, printer_name, int(print_copy_entry.get()))
 
@@ -214,7 +222,7 @@ delete_folder()
 num_list = read_nomor_resep()
 
 root = Tk()
-root.geometry("730x500")
+root.geometry("730x600")
 root.title("Etiket")
 root.option_add("*font", "Arial 14")
 
@@ -286,19 +294,24 @@ yes_finish_radio_button.grid(row=5, column=1, pady= PADDING)
 no_finish_radio_button = Radiobutton(root, text="Tidak", value="Tidak", variable=must_finish_state, justify='left')
 no_finish_radio_button.grid(row=5, column=2, pady= PADDING)
 
+qty_label = Label(root, text="Qty:", justify='right')
+qty_label.grid(row=6, column=0, padx=PADDING, pady=PADDING, sticky=RIGHT)
+
+qty_entry = Entry(root)
+qty_entry.grid(row=6, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
+
 print_copy_label = Label(root, text="Copy:", justify='right')
-print_copy_label.grid(row=6, column=0, padx=PADDING, pady=PADDING)
+print_copy_label.grid(row=7, column=0, padx=PADDING, pady=PADDING, sticky=RIGHT)
 
 print_copy_entry = Entry(root)
 print_copy_entry.insert(END, "1")
-print_copy_entry.grid(row=6, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
+print_copy_entry.grid(row=7, column=1, columnspan=4, sticky=LEFT + RIGHT, pady=PADDING)
 
-
-entry_group = (num_entry, name_entry, num_of_consume_entry, dose_entry, print_copy_entry)
+entry_group = (num_entry, name_entry, num_of_consume_entry, dose_entry, qty_entry, print_copy_entry)
 dropdown_state_group = (use_state, unit_state, consume_time_state)
 
 print_button = Button(root, text="Print", command=print_button_clicked, background='#C7EFCF', activebackground='#5ADBFF')
-print_button.grid(row=7, column=0, columnspan=5, sticky=LEFT + RIGHT, padx=PADDING, pady=PADDING)
+print_button.grid(row=8, column=0, columnspan=5, sticky=LEFT + RIGHT, padx=PADDING, pady=PADDING)
 
 root.mainloop()
 
