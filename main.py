@@ -193,11 +193,17 @@ def print_button_clicked():
     if isValid is False:
         messagebox.showerror("Error", "Copy harus angka!")
         return
+    
+    print_copy = int(print_copy_entry.get())
 
+    if print_copy not in range(1, 6):
+        messagebox.showerror("Error", "Copy harus angka 1-5!")
+        return
+    
     file_name = create_pdf_eticket(data)
     
     printer_name = select_printer(root)
-    print_using_acrobat(file_name, printer_name, int(print_copy_entry.get()))
+    print_using_acrobat(file_name, printer_name, print_copy)
 
     # for entry in entry_group:
     #     entry.delete(0, 'end')
