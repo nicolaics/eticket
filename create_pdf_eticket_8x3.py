@@ -139,19 +139,28 @@ def create_pdf_eticket(data):
     # Dose vertical seperator line
     pdf.line((PAPER_WIDTH / 2), consume_y, (PAPER_WIDTH / 2), (consume_y + CELL_HEIGHT))
 
+    # Line after dose and when to consume
+    pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
+
     if data["must_finish"] == "HABISKAN":
-        # Line after dose and when to consume
-        pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
+        # Qty and must finish vertical seperator line
+        pdf.line((PAPER_WIDTH / 2), pdf.y, (PAPER_WIDTH / 2), (pdf.y + CELL_HEIGHT))
+
         pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-        pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C')
+        pdf.cell(((MAX_WIDTH / 2) - MARGIN), CELL_HEIGHT, "Qty: {0}".format(data["qty"]), align='c')
+
+        pdf.set_xy(((MAX_WIDTH / 2) + MARGIN), pdf.y)
+        pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
+        pdf.cell(((MAX_WIDTH / 2) - MARGIN), CELL_HEIGHT, data["must_finish"], align='C')
+    else:
+        pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
+        pdf.cell(MAX_WIDTH, CELL_HEIGHT, "Qty: {0}".format(data["qty"]), align='c')
 
     print("Must finish: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
-    
-    pdf.set_font(FONT_NAME, REGULAR, 6)
-    pdf.set_xy(7.4, 2.5)
-    pdf.cell((pdf.get_string_width(data["qty"]) + MARGIN), 0.3, data["qty"], align='c', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
+
+    # file_name = "8x3.pdf"
     
     print(file_name)
     pdf.output(file_name)
@@ -172,8 +181,8 @@ if __name__ == "__main__":
         "dose": u"3 x <sup>1</sup>\u2044<sub>2</sub>",
         # "dose": "3 x 1",
         "consume_time": "Sesudah Makan",
-        # "must_finish": "Tidak",
-        "must_finish": "HABISKAN",
+        "must_finish": "Tidak",
+        # "must_finish": "HABISKAN",
         # "unit": "Kapsul",
         "unit": "Bungkus",
         "qty": "100",

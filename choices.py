@@ -1,6 +1,7 @@
 use_choice = [
     "Batuk",
     "Pilek",
+    "Flu",
     "Batuk dan Pilek",
     "Batuk Sesak",
     "Maag",

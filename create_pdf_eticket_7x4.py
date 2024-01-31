@@ -172,19 +172,24 @@ def create_pdf_eticket(data):
 
     print("After consume time: {0}, {1:.1f}".format(pdf.x, pdf.y))
 
+    # Line after when to eat the medicine
+    pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
+    
     if data["must_finish"] == "HABISKAN":
-        # Line after when to eat the medicine
-        pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
         pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
         pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+        pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
     print("Must finish: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
     
-    pdf.set_font(FONT_NAME, REGULAR, 7)
-    pdf.set_xy(3.4, 5.55)
-    pdf.cell((pdf.get_string_width(data["qty"]) + 0.1), 0.4, data["qty"], align='c', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
+    pdf.cell(MAX_WIDTH, CELL_HEIGHT, "Qty: {0}".format(data["qty"]), align='c', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+
+    pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
     file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
+    
+    # file_name = "7x4.pdf"
     
     print(file_name)
     pdf.output(file_name)
@@ -204,8 +209,8 @@ if __name__ == "__main__":
         # "dose": "3 x 1",
         "dose": u"3 x <sup>1</sup>\u2044<sub>2</sub>",
         "consume_time": "Sesudah Makan",
-        "must_finish": "Tidak",
-        # "must_finish": "HABISKAN",
+        # "must_finish": "Tidak",
+        "must_finish": "HABISKAN",
         # "unit": "Kapsul",
         "unit": "Bungkus",
         "qty": "100"
