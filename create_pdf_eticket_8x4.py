@@ -22,14 +22,14 @@ def get_num_of_lines_in_multicell(pdf, message, width, err_margin):
     return n
 
 def create_pdf_eticket(data):
-    PAPER_WIDTH = 5
-    PAPER_HEIGHT = 7
+    PAPER_WIDTH = 4
+    PAPER_HEIGHT = 8
 
     BOLD = "B"
     REGULAR = ""
-    FONT_SIZE = 10
-    BIGGER_FONT_SIZE = 12
-    CELL_HEIGHT = 0.7
+    FONT_SIZE = 9
+    BIGGER_FONT_SIZE = 11
+    CELL_HEIGHT = 0.6
     MARGIN = 0.1
     MAX_WIDTH = PAPER_WIDTH - (MARGIN * 2)
 
@@ -69,9 +69,10 @@ def create_pdf_eticket(data):
     num_col_width = pdf.get_string_width("No.") + MARGIN
 
     pdf.cell(num_col_width, CELL_HEIGHT, "No.")
-    pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, data["num"])
+    pdf.cell((TOP_COLUMN_WIDTH - num_col_width), CELL_HEIGHT, data["num"], new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    pdf.set_x(2.1)
+    # Line after No.
+    pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
     date_col_width = pdf.get_string_width("Tgl.") + MARGIN
     pdf.cell(date_col_width, CELL_HEIGHT, "Tgl.")
@@ -79,14 +80,14 @@ def create_pdf_eticket(data):
 
     print("After No. and Date: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
-    # Line after No. and date
+    # Line after date
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
     
     # Save temp for the name title and the name itself
     temp_y = pdf.y
     
     # Set the Y-axis for the name title to be in the middle of the box
-    pdf.y += 0.6
+    pdf.y += 0.7
 
     name_col_width = pdf.get_string_width("Nama:")
 
@@ -104,7 +105,9 @@ def create_pdf_eticket(data):
     pdf.y = temp_y
 
     if num_of_lines == 1:
-        pdf.y += (CELL_HEIGHT / 2) + 0.08
+        pdf.y += (CELL_HEIGHT / 2) + 0.25
+    elif num_of_lines == 2:
+        pdf.y += (CELL_HEIGHT / 2)
 
     pdf.x = name_col_width + (MARGIN * 2)
 
@@ -112,7 +115,7 @@ def create_pdf_eticket(data):
 
     print("After Name: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
-    second_line_y = temp_y + (CELL_HEIGHT * 2)
+    second_line_y = temp_y + (CELL_HEIGHT * 3)
     pdf.y = second_line_y
 
     # Line after name
@@ -128,7 +131,7 @@ def create_pdf_eticket(data):
 
     # To put the use in the middle of the box
     if num_of_lines == 1:
-        pdf.y += 0.4
+        pdf.y += (CELL_HEIGHT / 2)
 
     pdf.multi_cell(MAX_WIDTH, CELL_HEIGHT, data["use"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
@@ -141,21 +144,21 @@ def create_pdf_eticket(data):
     
     fourth_line_y = third_line_y + CELL_HEIGHT
 
-    pdf.set_xy(0.5, third_line_y)
+    pdf.set_xy(0.2, third_line_y)
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     title_width = pdf.get_string_width("Sehari")
     pdf.cell(title_width, CELL_HEIGHT, "Sehari")
 
     unit_width = pdf.get_string_width("Bungkus") + (MARGIN * 2)
 
-    dose_pos_y = third_line_y + 0.15
+    dose_pos_y = third_line_y + 0.1
 
     pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
-    pdf.set_xy(1.9, dose_pos_y)
+    pdf.set_xy(1.4, dose_pos_y)
     pdf.write_html(data["dose"])
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-    pdf.set_xy(3.2, third_line_y)
+    pdf.set_xy(2.5, third_line_y)
     pdf.cell(unit_width, CELL_HEIGHT, data["unit"], new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     print("After dose: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
@@ -178,10 +181,12 @@ def create_pdf_eticket(data):
     print("Must finish: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
     
     pdf.set_font(FONT_NAME, REGULAR, 7)
-    pdf.set_xy(4.4, 5.1)
+    pdf.set_xy(3.4, 5.55)
     pdf.cell((pdf.get_string_width(data["qty"]) + 0.1), 0.4, data["qty"], align='c', border=1, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
+    # file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
+
+    file_name = "8x4.pdf"
     
     print(file_name)
     pdf.output(file_name)
@@ -192,17 +197,19 @@ def create_pdf_eticket(data):
 if __name__ == "__main__":
     data = {
         "num": "69-1",
-        # "name": "Nicolai Christian",
-        "name": "Seng Kwek Gega",
+        "name": "Nicolai Chris",
+        # "name": "Nicolai",
+        # "name": "Seng Kwek Gega",
         # "use": "Antibiotik / Radang Tenggorokan",
-        "use": "Obat Tidur / PenenangW",
-        # "use": "Maag",
+        # "use": "Obat Tidur / PenenangW",
+        "use": "Maag",
         "dose": "3 x 1",
         "consume_time": "Sesudah Makan",
         "must_finish": "Tidak",
         # "must_finish": "HABISKAN",
-        "unit": "Kapsul",
-        "qty": "15"
+        # "unit": "Kapsul",
+        "unit": "Bungkus",
+        "qty": "100"
     }
 
     create_pdf_eticket(data)
