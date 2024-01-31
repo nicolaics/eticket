@@ -33,6 +33,7 @@ def create_pdf_eticket(data):
     MARGIN = 0.1
     MAX_WIDTH = PAPER_WIDTH - (MARGIN * 2)
 
+    today = date.strftime(date.today(), "%d-%m-%Y")
     today_folder = date.today()
 
     parent_dir = "D:/"
