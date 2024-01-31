@@ -47,7 +47,7 @@ def create_pdf_eticket(data):
         pass
 
     pdf = FPDF('P', 'cm', (PAPER_WIDTH, PAPER_HEIGHT))
-    pdf.set_margins(MARGIN, MARGIN, MARGIN)
+    pdf.set_margin(MARGIN)
     pdf.set_auto_page_break(False, MARGIN)
 
 
@@ -151,15 +151,15 @@ def create_pdf_eticket(data):
 
     unit_width = pdf.get_string_width("Bungkus") + (MARGIN * 2)
 
-    dose_pos_y = third_line_y + 0.1
+    dose_pos_y = third_line_y + MARGIN
 
     pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
-    pdf.set_xy(1.4, dose_pos_y)
+    pdf.set_xy(1.3, dose_pos_y)
     pdf.write_html(data["dose"])
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     pdf.set_xy(2.5, third_line_y)
-    pdf.cell(unit_width, CELL_HEIGHT, data["unit"], new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(unit_width, CELL_HEIGHT, data["unit"], align='l', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     print("After dose: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
@@ -201,7 +201,8 @@ if __name__ == "__main__":
         # "use": "Antibiotik / Radang Tenggorokan",
         # "use": "Obat Tidur / PenenangW",
         "use": "Maag",
-        "dose": "3 x 1",
+        # "dose": "3 x 1",
+        "dose": u"3 x <sup>1</sup>\u2044<sub>2</sub>",
         "consume_time": "Sesudah Makan",
         "must_finish": "Tidak",
         # "must_finish": "HABISKAN",

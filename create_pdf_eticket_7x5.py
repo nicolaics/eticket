@@ -47,7 +47,7 @@ def create_pdf_eticket(data):
         pass
 
     pdf = FPDF('P', 'cm', (PAPER_WIDTH, PAPER_HEIGHT))
-    pdf.set_margins(MARGIN, MARGIN, MARGIN)
+    pdf.set_margin(MARGIN)
     pdf.set_auto_page_break(False, MARGIN)
 
 
