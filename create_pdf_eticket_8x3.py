@@ -21,7 +21,7 @@ def get_num_of_lines_in_multicell(pdf, message, width, err_margin):
             line = word + " "
     return n
 
-def create_pdf_eticket(data):
+def create_pdf_eticket_8x3(data):
     PAPER_WIDTH = 8
     PAPER_HEIGHT = 3
 
@@ -70,8 +70,8 @@ def create_pdf_eticket(data):
     pdf.line(0, pdf.y, FIRST_COL_WIDTH, pdf.y)
 
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
-    date_col_width = pdf.get_string_width("Tgl. {0}".format(data["date"])) + MARGIN
-    pdf.cell(date_col_width, CELL_HEIGHT, "Tgl. {0}".format(data["date"]), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    date_col_width = pdf.get_string_width("Tgl. {0}".format(today)) + MARGIN
+    pdf.cell(date_col_width, CELL_HEIGHT, "Tgl. {0}".format(today), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     date_name_line_y = pdf.y
 
@@ -165,7 +165,7 @@ def create_pdf_eticket(data):
     print(file_name)
     pdf.output(file_name)
 
-    return file_name
+    return (file_name, PAPER_WIDTH, (PAPER_HEIGHT + 0.4), 'P')
     
 
 if __name__ == "__main__":
@@ -181,12 +181,12 @@ if __name__ == "__main__":
         "dose": u"3 x <sup>1</sup>\u2044<sub>2</sub>",
         # "dose": "3 x 1",
         "consume_time": "Sesudah Makan",
-        "must_finish": "Tidak",
-        # "must_finish": "HABISKAN",
+        # "must_finish": "Tidak",
+        "must_finish": "HABISKAN",
         # "unit": "Kapsul",
         "unit": "Bungkus",
         "qty": "100",
         "date": "30-01-2024"
     }
 
-    create_pdf_eticket(data)
+    create_pdf_eticket_8x3(data)

@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
-from create_pdf_eticket_7x5 import create_pdf_eticket
+from create_pdf_eticket_7x4 import create_pdf_eticket_7x4
+from create_pdf_eticket_7x5 import create_pdf_eticket_7x5
+from create_pdf_eticket_8x3 import create_pdf_eticket_8x3
 from print_using_acrobat import print_using_acrobat
 from select_printer import select_printer
 from datetime import datetime, timedelta, date
@@ -200,10 +202,17 @@ def print_button_clicked():
         messagebox.showerror("Error", "Copy harus angka 1-5!")
         return
     
-    file_name = create_pdf_eticket(data)
+    (printer_name, etix_sz) = select_printer(root)
+
+    if etix_sz == "7x4":
+        (file_name, width, length, orientation) = create_pdf_eticket_7x4(data)
+    elif etix_sz == "7x5":
+        (file_name, width, length, orientation) = create_pdf_eticket_7x5(data)
+    else:
+        (file_name, width, length, orientation) = create_pdf_eticket_8x3(data)
     
-    printer_name = select_printer(root)
-    print_using_acrobat(file_name, printer_name, print_copy)
+    if file_name is not None or printer_name != "":
+        print_using_acrobat(file_name, printer_name, print_copy, orientation, length, width)
 
     # for entry in entry_group:
     #     entry.delete(0, 'end')

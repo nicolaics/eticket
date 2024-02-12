@@ -3,27 +3,36 @@ import win32api
 import win32con
 from tkinter import messagebox
 
-def print_using_acrobat(file_name, printer_name, copy : int):
+def print_using_acrobat(file_name, printer_name, copy : int, orientation, length, width):
     PRINTER_DEFAULTS = {"DesiredAccess":win32print.PRINTER_ALL_ACCESS}
     printer_handler = win32print.OpenPrinter(printer_name, PRINTER_DEFAULTS)
     level = 2
     properties = win32print.GetPrinter(printer_handler, level)
     pDevModeObj = properties["pDevMode"]
 
-    pDevModeObj.Orientation = win32con.DMORIENT_LANDSCAPE # Change into landscape
-    pDevModeObj.PaperLength = 500 #SIZE IN 1/10 mm
-    pDevModeObj.PaperWidth = 740 #SIZE IN 1/10 mm
+    if orientation == 'P':
+        properties["pDevMode"].Orientation = win32con.DMORIENT_PORTRAIT # Change into landscape    
+    else:
+        properties["pDevMode"].Orientation = win32con.DMORIENT_LANDSCAPE # Change into landscape
+    
+    # properties["pDevMode"].PaperLength = 500 #SIZE IN 1/10 mm
+    # properties["pDevMode"].PaperWidth = 740 #SIZE IN 1/10 mm
+        
+    properties["pDevMode"].PaperLength = int(length * 100.0) # Size in cm
+    properties["pDevMode"].PaperWidth = int(width * 100.0) # Size in cm
 
     # print(dir(pDevModeObj))
     # print(pDevModeObj.Copies)
 
-    properties["pDevMode"] = pDevModeObj
+    # properties["pDevMode"] = pDevModeObj
 
     # print(pDevModeObj.PrintQuality)
     # print(pDevModeObj.Color)
 
+    win32print.SetPrinter(printer_handler, level, properties, 0)
+
     # win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, win32con.DM_IN_PROMPT | win32con.DM_IN_BUFFER | win32con.DM_OUT_BUFFER)
-    win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, win32con.DM_IN_BUFFER | win32con.DM_OUT_BUFFER)
+    # win32print.DocumentProperties(None, printer_handler, printer_name, pDevModeObj, pDevModeObj, win32con.DM_IN_BUFFER | win32con.DM_OUT_BUFFER)
 
     for it in range(copy):
         win32api.ShellExecute(

@@ -21,7 +21,7 @@ def get_num_of_lines_in_multicell(pdf, message, width, err_margin):
             line = word + " "
     return n
 
-def create_pdf_eticket(data):
+def create_pdf_eticket_7x5(data):
     PAPER_WIDTH = 5
     PAPER_HEIGHT = 7
 
@@ -191,7 +191,7 @@ def create_pdf_eticket(data):
     print(file_name)
     pdf.output(file_name)
 
-    return file_name
+    return (file_name, PAPER_WIDTH, (PAPER_HEIGHT + 0.4), 'L')
     
 
 if __name__ == "__main__":
@@ -210,4 +210,4 @@ if __name__ == "__main__":
         "qty": "15"
     }
 
-    create_pdf_eticket(data)
+    create_pdf_eticket_7x5(data)
