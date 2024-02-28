@@ -91,7 +91,7 @@ def create_pdf_eticket_8x3(data):
     name_size_limit = (MAX_WIDTH - FIRST_COL_WIDTH - name_col_width)
 
     num_of_lines = get_num_of_lines_in_multicell(pdf, data["name"], name_size_limit, 0.3)
-    print(num_of_lines)
+    # print(num_of_lines)
 
     if num_of_lines == 1:
         pdf.set_xy(pdf.x, (CELL_HEIGHT / 2))
@@ -100,7 +100,7 @@ def create_pdf_eticket_8x3(data):
 
     pdf.multi_cell((MAX_WIDTH - FIRST_COL_WIDTH - name_col_width), CELL_HEIGHT, data["name"], align='c', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After Name: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("After Name: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
 
@@ -111,7 +111,7 @@ def create_pdf_eticket_8x3(data):
     # Line after usage
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
-    print("After use: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("After use: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
    
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     a_day_width = pdf.get_string_width("Sehari") + MARGIN
@@ -128,13 +128,13 @@ def create_pdf_eticket_8x3(data):
     pdf.set_xy(2.4, consume_y)
     pdf.cell(unit_width, CELL_HEIGHT, data["unit"], align='l')
 
-    print("After dose: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("After dose: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     pdf.set_xy((MARGIN + (PAPER_WIDTH / 2)), pdf.y)
 
     pdf.cell((MAX_WIDTH / 2), CELL_HEIGHT, data["consume_time"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After consume time: {0}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("After consume time: {0}, {1:.1f}".format(pdf.x, pdf.y))
 
     # Dose vertical seperator line
     pdf.line((PAPER_WIDTH / 2), consume_y, (PAPER_WIDTH / 2), (consume_y + CELL_HEIGHT))
@@ -156,13 +156,13 @@ def create_pdf_eticket_8x3(data):
         pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
         pdf.cell(MAX_WIDTH, CELL_HEIGHT, "Qty: {0}".format(data["qty"]), align='c')
 
-    print("Must finish: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("Must finish: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     file_name = path + "/{0}_{1}_{2}.pdf".format(data["num"], data["name"], today)
 
     # file_name = "8x3.pdf"
     
-    print(file_name)
+    # print(file_name)
     pdf.output(file_name)
 
     return (file_name, PAPER_WIDTH, (PAPER_HEIGHT + 0.4), 'P')

@@ -65,12 +65,12 @@ def select_printer(root):
 
     global printer_name_presc
     global printer_name_etix
-    global etix_size
+    global etix_sz
 
     def_printer_file = "prev_printer.txt"
     printer_name_presc = ""
     printer_name_etix = ""
-    etix_size = ""
+    etix_sz = ""
 
     try:
         fh = open(def_printer_file, 'r')
@@ -91,7 +91,7 @@ def select_printer(root):
 
     select_printer_window.mainloop()
 
-    return (printer_name_etix, etix_size)
+    return (printer_name_etix, etix_sz)
 
 
 if __name__ == "__main__":

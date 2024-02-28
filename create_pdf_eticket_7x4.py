@@ -78,7 +78,7 @@ def create_pdf_eticket_7x4(data):
     pdf.cell(date_col_width, CELL_HEIGHT, "Tgl.")
     pdf.cell((TOP_COLUMN_WIDTH - date_col_width), CELL_HEIGHT, today, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After No. and Date: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("After No. and Date: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     # Line after date
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
@@ -99,7 +99,7 @@ def create_pdf_eticket_7x4(data):
     name_size_limit = (MAX_WIDTH - name_col_width)
 
     num_of_lines = get_num_of_lines_in_multicell(pdf, data["name"], name_size_limit, 0.3)
-    print(num_of_lines)
+    # print(num_of_lines)
 
     # To reset the Y-axis for the name from the title
     pdf.y = temp_y
@@ -113,7 +113,7 @@ def create_pdf_eticket_7x4(data):
 
     pdf.multi_cell((MAX_WIDTH - name_col_width - (MARGIN * 2)), CELL_HEIGHT, data["name"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After Name: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("After Name: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     second_line_y = temp_y + (CELL_HEIGHT * 3)
     pdf.y = second_line_y
@@ -127,7 +127,7 @@ def create_pdf_eticket_7x4(data):
     pdf.set_font(FONT_NAME, REGULAR, BIGGER_FONT_SIZE)
 
     num_of_lines = get_num_of_lines_in_multicell(pdf, data["use"], MAX_WIDTH, 0)
-    print(num_of_lines)
+    # print(num_of_lines)
 
     # To put the use in the middle of the box
     if num_of_lines == 1:
@@ -135,7 +135,7 @@ def create_pdf_eticket_7x4(data):
 
     pdf.multi_cell(MAX_WIDTH, CELL_HEIGHT, data["use"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After use: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("After use: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     # Line after medicine usage
     pdf.line(0, third_line_y, PAPER_WIDTH, third_line_y)
@@ -161,7 +161,7 @@ def create_pdf_eticket_7x4(data):
     pdf.set_xy(2.5, third_line_y)
     pdf.cell(unit_width, CELL_HEIGHT, data["unit"], align='l', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After dose: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("After dose: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
 
     # Line after dose
     pdf.line(0, fourth_line_y, PAPER_WIDTH, fourth_line_y)
@@ -170,7 +170,7 @@ def create_pdf_eticket_7x4(data):
 
     pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["consume_time"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    print("After consume time: {0}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("After consume time: {0}, {1:.1f}".format(pdf.x, pdf.y))
 
     # Line after when to eat the medicine
     pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
@@ -180,7 +180,7 @@ def create_pdf_eticket_7x4(data):
         pdf.cell(MAX_WIDTH, CELL_HEIGHT, data["must_finish"], align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         pdf.line(0, pdf.y, PAPER_WIDTH, pdf.y)
 
-    print("Must finish: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
+    # print("Must finish: {0:.1f}, {1:.1f}".format(pdf.x, pdf.y))
     
     pdf.set_font(FONT_NAME, REGULAR, FONT_SIZE)
     pdf.cell(MAX_WIDTH, CELL_HEIGHT, "Qty: {0}".format(data["qty"]), align='c', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
@@ -191,7 +191,7 @@ def create_pdf_eticket_7x4(data):
     
     # file_name = "7x4.pdf"
     
-    print(file_name)
+    # print(file_name)
     pdf.output(file_name)
 
     return (file_name, PAPER_WIDTH, (PAPER_HEIGHT + 0.4), 'L')
